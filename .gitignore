@@ -1,0 +1,5 @@
+*.aux
+tesina.log
+*.out
+*.gz
+tesina.toc

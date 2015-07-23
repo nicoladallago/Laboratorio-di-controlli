@@ -1,0 +1,976 @@
+\documentclass[english]{article}
+\usepackage[italian]{babel} 
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{wrapfig}
+
+
+\makeatletter
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{subfig}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{fancyhdr}
+\usepackage{booktabs,array}
+\usepackage[output-decimal-marker={,}]{siunitx}
+\usepackage{color}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{hf-tikz}
+\usepackage{tikz}
+\usepackage{schemabloc}
+\usetikzlibrary{circuits}
+\usepackage{tabularx}
+\usepackage{pgfplots}
+
+
+% SCHEMA A BLOCCHI %
+\newcommand{\trippleSpacing}{\phantom{aaa}}	% spazio di tre caratteri
+\newcommand{\singleSpacing}{\phantom{a}}	% spazio di un carattere
+		
+\tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=2em]
+\tikzstyle{sum} = [circle, minimum width=12pt, draw, inner sep=0pt, path picture={\draw (path picture bounding box.south east) -- (path picture bounding box.north west) (path picture bounding box.south west) -- (path picture bounding box.north east);}]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\tikzstyle{my right of} = [right of=#1.east]
+
+
+%%%%%%%%%%%%%% MATLAB code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{listings} % inserisce listati di programmi
+\definecolor{commenti}{rgb}{0.13,0.55,0.13}
+\definecolor{stringhe}{rgb}{0.63,0.125,0.94}
+\lstloadlanguages{Matlab}
+\lstset{% general command to set parameter(s)
+framexleftmargin=0mm,
+frame=single,
+keywordstyle = \color{blue},% blue keywords
+identifierstyle =, % nothing happens
+commentstyle = \color{commenti}, % comments
+stringstyle = \ttfamily \color{stringhe}, % typewriter type for strings
+showstringspaces = false, % no special string spaces
+emph = {for, if, then, else, end},
+emphstyle = \color{blue},
+firstnumber = 1, % numero della prima linea
+numbers =left, %  show number_line
+numberstyle = \tiny, % style of number_line
+stepnumber = 1, % one number_line after stepnumber
+numbersep = 5pt,
+language = {Matlab}, % per riconoscere la sintassi matlab
+extendedchars = true, % per abilitare caratteri particolari
+breaklines = true, % per mandare a capo le righe troppo lunghe
+breakautoindent = true, % indenta le righe spezzate
+breakindent = 30pt, % indenta le righe di 30pt
+}
+
+
+
+\hyphenation{italian}
+\lhead{Laboratorio di Controlli}
+\rhead{Esperienza 1}
+
+\makeatother
+
+\usepackage{babel}
+
+\begin{document}
+\begin{titlepage} 
+
+\begin{center}
+\begin{Large} \textbf{UNIVERSITA' DEGLI STUDI DI PADOVA} \\
+ \end{Large} \vspace{1cm}
+ \begin{Large} \textbf{Corso di Laurea Magistrale in Ingegneria dell'Automazione}\\
+ \end{Large} \vspace{2cm}
+\begin{Large} Corso di Laboratorio di Controlli \end{Large}
+\par\end{center}
+
+\begin{center}
+\begin{Large}Esperienza 2: Progettazione di controllori PID e con retroazione stato per un motore elettrico\\
+ \end{Large}
+\par\end{center}
+
+\begin{center}
+\vspace{2cm}
+\begin{figure}[!htb]
+\centering \includegraphics[width=8cm]{./figure/unipd}\\
+ 
+\end{figure}
+
+\par\end{center}
+
+\begin{center}
+ \vspace{2cm}
+ \begin{Large} Dal Lago Nicola - 1104228 \\
+ \end{Large} \vspace{2cm}
+ \begin{Large} Anno Accademico 2014-2015 \end{Large} 
+\par\end{center}
+
+\end{titlepage}
+
+\tableofcontents
+
+
+\newpage
+\section{Scopo}
+\label{sec:Scopo}
+
+	Lo scopo di questa esperienza è la progettazione di regolatori PID e in spazio di stato per il controllo di un motore elettrico a corrente continua controllato in tensione. In particolar modo si vuole analizzare il comportamento del sistema in catena chiusa sollecitato da un ingresso a gradino. Si vogliono quindi caratterizzare le differenze tra un regolatore PID con desaturatore e un regolatore ottenuto tramite retroazione di stato. Altro obiettivo importate dell'esperienza è il confronto tra i risultati ottenuti per simulazione e sperimentalmente, motivando le eventuali ritarature dei parametri di controllo
+
+
+
+
+	
+\section{Descrizione apparato sperimentale}	
+\label{sec:DEscrizioneApparatoSperimentale}
+
+	Il sistema di controllo fornito in laboratorio si basa sul programma Real-Time Workshop che permette l'esecuzione in tempo reale di controllori implementati tramite Matlab-Simulink. L'apparato sperimentale è rappresentato in Figura \ref{fig:apparatoSperimentale}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\textwidth]{./figure/apparato_sperimentale}
+		\caption{Schema componenti dell'apparato sperimentale.}
+		\label{fig:apparatoSperimentale}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.45\textwidth]{./figure/motore}
+		\caption{Sistema elettromeccanico da controllare (vista dall'alto)}
+		\label{fig:fotoMotore}
+	\end{figure}
+	
+	\begin{figure}[!ht]
+		\centering
+		\subfloat[Modulo di potenza]
+		{\includegraphics[width=0.3\textwidth,height=0.45\textwidth]{./figure/alimentatore}
+		\label{fig:fotoModuloPotenza}}
+		\subfloat[Scheda di acquisizione PCI]
+		{\includegraphics[width=0.3\textwidth,height=0.5\textwidth]{./figure/PCI}
+		\label{fig:fotoSchedaNational}}
+		\caption{Componenti dell'apparato sperimentale}
+	\end{figure}
+	
+	\noindent Il processo da controllare è costituito da un sistema elettromeccanico comandato da un motore in corrente continua con motoriduttore. Quest'ultimo muove altre due ruote dentate, quella centrale che rappresenta il carico e ha lo scopo di indicare la posizione e il movimento in gradi della ruota, mentre nella seconda ruota (quella più esterna) è montato un trasduttore (costituito da un potenziometro) che converte la posizione in gradi del carico in segnale elettrico. Da notare che il sistema a tre ruote serve per ridurre l'effetto di \textit{backlash} al carico ovvero il gioco che esiste fra due ingranaggi qualunque per il semplice fatto che le tolleranze meccaniche non permettono di avere un accoppiamento perfetto. A causa di questo fenomeno si ha un ritardo nell'inversione del moto su un asse rispetto al comando stesso di inversione. Per comandare tutto ciò si è utilizzato un modulo di potenza costituito da un alimentatore DC duale da 12V e da un amplificatore lineare che è in grado di fornire al motore $\pm 5$V. L'acquisizione dati è stata fatta con la scheda \textit{National Instruments PCI-6221} accessibile via software attraverso porte I/O. In Figura \ref{fig:fotoMotore} si osservano i diversi componenti che costituiscono il sistema elettromeccanico da controllare e in Figura \ref{fig:fotoModuloPotenza} si nota il modulo di potenza utilizzato assieme alla scheda di acquisizione dati in Figura \ref{fig:fotoSchedaNational}. In Figura \ref{fig:blocchiSimulink} sono raffigurati blocchi che permettono la comunicazione tra Matlab-Simulink e la scheda PCI che a sua volta, tramite il modulo di potenza, è connessa al motore e al trasduttore.
+	
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=0.3\textwidth]{./figure/blocchi_simulink}
+		\caption{Blocchi Simulink per la prova sperimentale}
+		\label{fig:blocchiSimulink}
+	\end{figure}
+	
+	
+	
+	
+	
+	
+	
+	
+\newpage
+\section{Modellizzazione}
+\label{sec:Modelizzazione}
+	
+	Nel corso di questa esperienza, viene impiegato un motore elettrico a corrente continua. Il motore è controllato tramite un segnale in tensione e fornisce in output l'attuale posizione del carico, attraverso l'utilizzo di un encoder.
+	
+	\subsection{Modellizzazione del motore}
+	\label{subsec:ModellizzazioneMotore}
+	
+		Un motore elettrico in corrente continua, può essere suddiviso in due parti, statore e rotore. \newline
+		Lo statore ha il compito di indurre un campo magnetico $B$, attraverso l'uso di materiali ferromagnetici e correnti elettriche. \newline
+		Il rotore è composto da un elevato numero di spire percorse da corrente $i$ e immerse nel campo magnetico prodotto dallo statore. \newline
+		Come è noto dalla \textit{legge di Faraday}, una spira in tale situazione produce una forza elettro motrice $f.e.m.$, pari all'opposto della derivata rispetto al tempo del flusso concatenato dalla spira
+	
+		\begin{equation}
+			f.e.m. = -\frac{d\theta(t)}{dt} = AB\sin(\alpha(t))\cdot\frac{d\alpha(t)}{dt}
+			\label{eq:fem}
+		\end{equation}
+	
+		\noindent dove $A$ è l'area della spira, e $\alpha$ è l'angolo tra il vettore campo magnetico e il versore perpendicolare alla spira con verso dato dalla regola della vite destrorsa. \newline
+		Si può quindi ricavare anche il momento torcente totale $\tau_{TOT}$ di ciascuna spira come
+	
+		\begin{equation}
+			\tau_{TOT} = ABi\sin{\alpha(t)}
+			\label{eq:momentoTorcente}
+		\end{equation} 
+	
+		\noindent Riassumendo, possiamo scrivere la \textbf{dinamica elettro-meccanica} del rotore:
+		
+		\begin{equation}
+			\begin{cases}
+				f.e.m. = -AB\omega = -k_{\phi}\omega \\
+				\tau_{TOT} = ABi = k_{\phi}i
+			\end{cases}
+			\label{eq:dinamecaElettroMeccanica}
+		\end{equation}
+	
+		\noindent dove, con $\omega$ si indica la velocità angolare del rotore e con $k_{\phi}$ la \textit{costante elettrica} fornita da datasheet.\newline
+		Per la \textbf{dinamica meccanica}, supponendo di avere un attrito viscoso descritto come $\tau_{attr} = -b\omega$, possiamo ricavarne l'equazione utilizzando il momento di inerzia $J$:
+	
+		\begin{equation}
+			J\frac{d\omega}{dt} = k_{\phi}i - b\omega
+			\label{eq:uscita}
+		\end{equation}  
+	
+		\noindent si noti come questa equazione può essere interpretata come l'uscita del nostro sistema motore, in quanto è una equazione differenziale in funzione della velocità angolare del motore. \newline
+		Passando alla \textbf{dinamica elettrica}, possiamo pensare il motore come una serie di una resistenza $R$, un generatore di forza elettromotrice $f.e.m.$ e una induttanza $L$; ai capi di tale serie, viene applicata una tensione $v_m$, il nostro controllo. Possiamo quindi scrivere l'equazione di controllo
+	
+		\begin{equation}
+			v_m -k_{\phi}\omega = Ri + L \frac{di}{dt}
+			\label{eq:controllo}
+		\end{equation}    
+	
+		\noindent Ora possiamo unire le equazioni di uscita e di controllo, e interpretare $i$ e $\omega$ come le variabili di stato
+	
+		\begin{equation}
+			\begin{cases}
+				v_m = Ri + L\frac{di}{dt} + k_{\phi}\omega \\
+				J\frac{d\omega}{dt} = -b\omega + k_{\phi}i
+			\end{cases}
+			\label{eq:dinamicaComplessiva}
+		\end{equation}
+	
+		\noindent e applicando la \textit{trasformata di Laplace} scriviamo
+	
+		\begin{equation}
+			\begin{cases}
+				V_m(s) = RI(s) +sLI(s) + k_{\phi}\Omega(s)\\
+				Js\Omega(s) = -b\Omega(s) + k_{phi}I(s)	
+			\end{cases}
+			\label{eq:dinamecaComplessivaLaplace}
+		\end{equation}
+	
+		\noindent Con dei semplici passaggi algebrici è possibile ottenere
+	
+		\begin{equation}
+			\Omega(s) = P(s)V_m(s) = \frac{k_{\phi}}{(R+sL)(b+SJ)+k_{\phi}}\cdot V_m(s)
+			\label{eq:funzioneTrasferimento}
+		\end{equation}
+	
+		\noindent dove con $P(s)$ indichiamo la funzione di trasferimento del processo. Nel caso del nostro motore, possiamo trascurare l'effetto induttivo, in quanto è di molto inferiore rispetto a tutti gli altri paramenti; ci risulta quindi una equazione di trasferimento
+	
+		\begin{equation}
+			P(s) = \frac{k_{\phi}}{RJs + Rb +K_{\phi}^2}
+			\label{eq:funzioneTrasferimentoSemplificata}
+		\end{equation}
+	
+		\noindent Come accennato all'inizio del paragrafo, il motore è disposto di un encoder in grado di misurare solo la posizione angolare $\theta_m$ del motore, e non la velocità angolare; è possibile però ricondursi ad una funzione di trasferimento che abbia la posizione e non la velocità come parametro di uscita ricordando la relazione che le lega: 
+	
+		\begin{equation*}
+			\frac{d\theta_m}{dt} = \omega
+			\label{eq:posizioneVelocità}
+		\end{equation*}
+	
+		\noindent e utilizzando la \textit{trasformata di Laplace} $s\Theta_m(s)=\Omega(s)$. Viene quindi aggiunto un polo in zero al processo:
+	
+		\begin{equation}
+			P_{\theta}(s) = \frac{k_{\phi}}{s(RJs + Rb + k_{\phi}^2)}
+			\label{eq:funzioneTrasferimentoMotoriduttore}
+		\end{equation}
+	
+		\noindent Per comandare il motore in gradi rispetto alla tensione, bisogna introdurre due costanti moltiplicative che sono in grado di trasformare un valore in gradi a uno in tensione e viceversa:
+	
+		\begin{itemize}
+			\item $K_{g2v}$ : costante moltiplicativa per passare da gradi a tensione;
+			\item $K_{v2g}$ : costante moltiplicativa per passare da tensione a gradi.
+			\label{item:costantiK} 
+		\end{itemize}
+	
+
+	\subsection{Modellizzazione del motoriduttore}
+	\label{subsec:ModellizzazioneMotoriduttore}
+	
+		Tipicamente un motore non viene usato direttamente per comandare un carico, ma si utilizzano una coppia di ingranaggi necessari per adattare le prestazioni del motore alle specifiche di progetto; questo tipo di configurazione viene chiamata \textit{motoriduzione}. E' necessario quindi definire nuove variabili:
+	
+		\begin{itemize}
+			\item $N_m$ : numero denti dell'ingranaggio collegato al motore;
+			\item $N_l$ : numero denti dell'ingranaggio collegato al carico;
+			\item $\tau_m$ : momento torcente applicato al motore dall'ingranaggio;
+			\item $\tau_l$ : momento torcente applicato al carico;
+			\item $b_m$ : costante di attrito viscoso nel rotore lato motore;
+			\item $b_l$ : costante di attrito viscoso nel rotore lato carico;
+			\item $N = \frac{N_l}{N_m}$ : rapporto di motoriduzione.
+		\end{itemize}  
+	
+		\noindent Inoltre il motore ha una serie di non idealità le quali ne complicherebbero di molto lo studio; riportiamo qui le semplificazioni fatte
+	
+		\begin{itemize}
+			\item $L = 0$ : induttanza trascurabile;
+			\item non c'è slittamento tra le ruote, il che implica;
+			\begin{equation}
+				\theta_mN_m = \theta_lN_l \Longrightarrow N_m\frac{d\theta_m}{dt}=N_l\frac{t\theta_l}{dt}
+				\label{eq:nonIdealità1}
+			\end{equation}
+			\item non c'è dissipazione al punto di contatto, cioè le potenze rimangono costanti.
+			\begin{equation}
+				\tau_m\omega_m=\tau_l\omega_l \Longrightarrow \tau_m\frac{d\theta_m}{dt}=\tau_l\frac{d\theta_l}{dt}
+				\label{eq:nonIdealità2}  
+			\end{equation}
+		\end{itemize}
+	
+		\noindent dall'equazione \ref{eq:nonIdealità1} e \ref{eq:nonIdealità2} otteniamo
+	
+		\begin{gather}
+			\frac{\omega_m}{\omega_l}=\frac{N_l}{N_m}=N \Longleftrightarrow \omega_m=N\omega_l \\
+			\tau_mN\omega_l=\tau_l\omega_l \Longleftrightarrow \tau_l=N\tau_m
+		\label{gat:comp}
+		\end{gather}
+	
+	
+		\noindent e unendo tutto insieme nell'equazione del motore ricaviamo
+	
+		\begin{gather}
+			\bigl(J_mN^2+J_l\bigl)\frac{d\omega_l}{dt}=-\bigl(b_mN^2+b_l\bigl)\omega_l+Nk_{\phi}i \\
+			J_{eq}\frac{d\omega_l}{dt}=-b_{eq}\omega_l+k_{\phi,eq}i
+			\label{gat:motoriduttore}
+		\end{gather}
+	
+		\noindent Si può vedere come la forma delle equazioni del motore e del motoriduttore siano praticamente uguali, ciò che cambia è il valore delle costanti. 
+		\noindent I dati di targa del motore presente in laboratorio sono riassunti nella tabella \ref{tab:parametri}. 
+		
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{ccc}
+				\toprule
+				\textbf{Parametro} & \textbf{Valore} & \textbf{Unità di misura}\\
+				\midrule
+				$K_{g2v}$ & \SI{0,0284}  & $Volt/rad$       \\
+				$K_{r2v}$ & \SI{1,63}    & $Volt/rad$       \\
+				$N$       & \SI{14}      &                  \\
+				$k_\phi$  & \SI{0,00767} & $Volt/(rad/sec)$ \\
+				$J_m$     & \SI{3,87e-7} & $kg\cdot m^2$    \\ 	
+				$J_l$     & \SI{3,42e-5} & $kg\cdot m^2$    \\
+				$R$       & \SI{2,6}     & $\Omega$         \\
+				$L$       & \SI{0,18e-3} & $H$              \\
+				\bottomrule
+			\end{tabular}
+			\caption{Dati di targa del motore}
+			\label{tab:parametri}
+		\end{table}
+	
+		\noindent $b_m$ e $b_l$ non sono noti a priori, ma per il nostro laboratorio vengono considerati nulli, come $L$. \newline
+		Come prima, anche in questo caso l'encoder ci fornisce la posizione angolare del carico e non la sua velocità, ma applicando gli stessi ragionamenti si può arrivare a formulare l'equazione finale del processo:	
+		
+		\begin{equation}
+			P_{\theta}(s) = 
+			%\tikzmarkin{right delim frac}(0.6,2.8)(-0.1,0.6)
+			\frac{Nk_{\phi}}{s\bigl( R(J_mN^2+J_l) \bigl) + N^2k_{\phi}^2}
+			%\tikzmarkend{right delim frac}
+			\label{eq:FunzioneTrasferimentoComplessiva}
+		\end{equation}
+		
+		\noindent mentre la vera funzione di trasferimento ``osservata'' dal motore è moltiplicata per il fattore $K_{r2v}$, risulta allora
+		
+		\begin{equation*}
+			P_{\theta}'(s)= K_{r2v}\cdot P_{\theta}(s) \approx \frac{375}{s(s+40)}
+		\end{equation*}
+		
+		\begin{figure}[H]
+			\centering
+			\subfloat[][\emph{Diagramma di Bode del modulo.}]{\includegraphics[width=.48\textwidth]{./figure/bode_mag.png}}\label{subfig:diagrammaBode} \quad
+			\subfloat[][\emph{Diagramma di Bode della fase.}]{\includegraphics[width=.48\textwidth]{./figure/bode_phase.png}}\label{subfig:mappaZeriPoli}
+			\caption{Diagramma di Bode di modulo e fase del processo relativo al motore.}
+			\label{fig:diagrammiMotore}
+		\end{figure}	
+		
+		\noindent In figura \ref{fig:diagrammiMotore} è rappresentato l'andamento di modulo e fase della funzione di trasferimento $P_{\theta}'(s)$.
+		
+
+
+\newpage
+\section{Progettazione controllore PID con desaturatore}
+\label{sec:PIDdesaturatore}
+
+	In questa sessione si procede alla progettazione del controllore PID con desaturatore. 
+	
+	\subsection{Il controllore PID}
+	\label{subsec:introduzionePID}
+	
+		Un controllore PID utilizza tre diverse azioni: proporzionale, integrativa e derivativa. Nella sua configurazione
+		più comune esse agiscono in parallelo, cioè sono alimentate dallo stesso ingresso e le tre uscite sono poi sommate
+		per ottenere l'uscita complessiva del controllore, come in Figura \ref{fig:schemaPID}. Si noti che il blocco derivatore non è un semplice $s$, ma una funzione di trasferimento strettamente propria, altrimenti impossibile da realizzare. 
+	
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto, node distance=1.6cm,>=latex']
+			
+				\node [input, name=input] {};
+				\node [input, name=dirama, right of=input] {};
+				\node [block, right of=dirama] (kI) {$K_I$};
+				\node [block, above of=kI] (kP) {$K_P$};
+				\node [block, below of=kI] (kD) {$K_D$};
+				\node [block, right of=kI] (I) {$\frac{1}{s}$};
+				\node [block, right of=kD] (D) {$\frac{s}{1+\tau_Ls}$};
+				\node [sum, right of=I] (sum) {};
+				\node [output, name=output, right of=sum] {};
+			
+				\draw [-] (input) -- node[pos=0.05] {$e(t)$} (dirama) {};
+			
+				\draw [->] (dirama) |- (kP) {};
+				\draw [->] (dirama) -- (kI) {};
+				\draw [->] (dirama) |- (kD) {};
+			
+				\draw [->] (kI) -- (I) {};
+				\draw [->] (kD) -- (D) {};
+			
+				\draw [->] (kP) -| (sum) {};
+				\draw [->] (I) -- (sum) {};
+				\draw [->] (D) -| (sum) {};	
+			
+				\draw [->] (sum) -- node[pos=0.95] {$u(t)$} (output) {};
+	
+			\end{tikzpicture}
+			\caption{Schema a blocchi di un controllore PID}
+			\label{fig:schemaPID}
+		\end{figure}
+	
+		\noindent La funzione di trasferimento del controllore può essere scritta come:
+	
+		\begin{equation}
+			%\tikzmarkin{right delim frac}(0.1,-0.4)(-0.1,0.6)
+			C(s) = K_P + \frac{K_I}{s} + \frac{K_D s}{1 + \tau _L s}
+			%\tikzmarkend{right delim frac}
+			\label{eq:PID}		
+		\end{equation}
+	
+		\noindent in cui sono presenti quattro parametri:
+		\begin{itemize}
+			\item $K_P$: costante dell'azione proporzionale
+			\item $K_I$: costante dell'azione integrale
+			\item $K_D$: costante dell'azione derivativa
+			\item $\tau_L$: costante temporale legata all'azione derivativa
+		\end{itemize}
+	
+		\noindent Si noti che in generale non è necessario utilizzare tutte e tre le azioni. Ognuna di esse infatti ha specifici effetti sulle prestazioni e sulla stabilità del sistema, schematizzate a seguire.
+	
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto, node distance=1.6cm,>=latex']
+		
+				\node [input, name=input] {};
+				\node [sum, right of=input] (sum) {};
+				\node [block, right of=sum] (C) {$C(s)$};
+				\node [block, right of=C] (P) {$P(s)$};
+				\node [output, name=dirama, right of=P] {};
+				\node [output, name=output, right of=dirama]  {};
+				\node [output, name=fittizio, below of=C] {};
+			
+				\draw [->] (input) -- node[pos=0.05] {$r(t)$} node[pos=0.91] {$+$} (sum) {}; 
+				\draw [->] (sum) -- (C) {};
+				\draw [->] (C) -- node[pos=0.5] {$u(t)$} (P) {};
+				\draw [-] (P) -- (dirama) {};
+				\draw [->] (dirama) -- node[pos=0.95] {$y(t)$} (output) {};
+			
+				\draw [-] (dirama) |- (fittizio) {};
+				\draw [->] (fittizio) -| node[pos=0.95] {$-$} (sum) {};
+		
+			\end{tikzpicture}
+			\caption{Schema a blocchi di un classico controllo in retroazione}
+			\label{fig:retroazione}
+		\end{figure}
+	
+		\noindent Analizziamo ora gli effetti che le tre azioni del controllore portano, sia gli aspetti positivi che quelli negativi. In figura \ref{fig:retroazione} è schematizzato un classico sistema di controllo in retroazione. Definendo $G(s)=C(s)P(s)$ la funzione di trasferimento in catena aperta del sistema possiamo calcolare
+	
+		\begin{itemize}
+			\item $\omega_a$: pulsazione di attraversamento, ovvero la pulsazione tale per cui il modulo di $G(s)$ raggiunge il valore uno;
+			\item $m_{\phi}^G=180°+\arg[G(j\omega_a)]$: margine di fase, che a meno di sistemi sfortunati, da una  indicazione del grado di stabilità del sistema. Ovvero maggiore è il margine di fase, più stabile è il sistema.		 
+		\end{itemize}
+		
+		\paragraph{Azione proporzionale P} 
+	   	\label{par:P}
+	   		\leavevmode\newline
+	   		La parte proporzionale può essere scritta come 
+	   		
+	   		\begin{equation*}
+	   			C_P(s)=K_P
+	   		\end{equation*}
+	   		
+	   		\noindent Ciò porta ad avere dei diagrammi di Bode piatti, di ampiezza $20\log_{10}K_P$ dB per quanto riguarda il modulo e 0 per la fase. Questo significa che può modificare la pulsazione di attraversamento ma non il margine di fase.
+	   		
+	   	\paragraph{Azione integrale I}
+	   	\label{par:I}
+	   		\leavevmode\newline
+	   		La parte integrale è invece
+	   		
+	   		\begin{equation*}
+		   		C_I(s)=\frac{K_I}{s}
+	   		\end{equation*}	
+	   		
+	   		\noindent Il modulo è una retta con intercetta con le ordinate pari a $20\log_{10}K_I$ dB e pendenza $-20$ dB/decade, e la fase una retta di ampiezza $-90°$. E' quindi rischioso da usare perché tende a far diventare il sistema $G(s)$ instabile, però offre il vantaggio di aggiungere un polo nell'origine e quindi di portare l'errore a regime a zero.
+	   		
+	   	\paragraph{Azione derivativa D}
+	   	\label{par:D}
+	   		\leavevmode\newline
+	   		L'azione derivativa è invece
+	   		
+	   		\begin{equation*}
+	   			C_D(s)=K_Ds
+	   		\end{equation*} 
+	   		
+	   		\noindent In questo caso il modulo è una retta sempre con intercetta $20\log_{10}K_D$ ma con pendenza $20$ dB/decade, mentre la fase è una retta di altezza $90°$. La fase tende a far migliorare la stabilità, però la derivata del segnale amplifica il rumore in ingresso. E' necessario inoltre dire che un controllore così costruito risulta impossibile da progettare in pratica, perché avrebbe il modulo che cresce all'infinito. Quello che si fa è di aggiungere un polo in alta frequenza, facendo diventare il controllore
+	   		
+	   		\begin{equation*}
+	   			D_D(s)=\frac{K_Ds}{1+\tau_Ls}
+	   		\end{equation*} 	 
+	
+		\noindent I pregi e difetti delle tre azioni sono schematizzati nella tabella che segue.	
+	
+	
+		\begin{table}[H]
+			\begin{tabularx}{\textwidth}{|>{\setlength\hsize{0.6\hsize}\setlength\linewidth{\hsize}}X|>{\setlength\hsize{1.3\hsize}\setlength\linewidth{\hsize}}X|>{\setlength\hsize{1.1\hsize}\setlength\linewidth{\hsize}}X|}
+			\hline
+			\multicolumn{3}{|c|}{Classificazione dei tre termini del controllore in base ai pro e contro.}\\
+			\hline
+			Termine & Pro & Contro \\
+			\hline
+			\vphantom{1. Proporzionale}
+			\vphantom{1. Proporzionale}
+			1. Proporzionale &
+			\vphantom{1. Proporzionale}
+				\begin{itemize}
+					\item Permette di modificare $\omega_a$ di $G(s)$ 
+					\item Semplice
+				\end{itemize} &
+				\vphantom{1. Proporzionale}
+				\begin{itemize}
+					\item Non può modificare $m_\phi^G$
+				\end{itemize}\\
+				\hline
+				\vphantom{2. Integrale}
+				\vphantom{2. Integrale}
+				2. Integrale &
+				\vphantom{2. Integrale}
+				\begin{itemize}
+					\item Elimina l'errore a regime
+					\item Elimina disturbi costanti in ingresso
+				\end{itemize} &
+				\vphantom{2. Integrale}
+				\begin{itemize}
+					\item Rende il sistema più instabile
+				\end{itemize}\\
+				\hline
+				\vphantom{3. Derivativo}
+				\vphantom{3. Derivativo}
+				3. Derivativo &
+				\vphantom{3. Derivativo}
+				\begin{itemize}
+					\item Rende il sistema più stabile
+				\end{itemize} &
+				\vphantom{3. Derivativo}
+				\begin{itemize}
+					\item Amplifica rumori di misura
+				\end{itemize}\\
+				\hline
+			\end{tabularx}
+			\label{tab:ProContro}
+		\end{table}
+	
+	
+	\subsection{Progettazione in frequenza del controllore PID}
+	\label{sub:ProgettazionePID}
+	
+		Possiamo riscrivere l'equazione del PID come
+		
+		\begin{equation}
+			C(s)=K_P + \frac{K_I}{s} + K_Ds=\frac{K_Ps+K_I+K_Ds^2}{s}=\frac{K_I(1+\frac{K_P}{K_I}s+\frac{K_D}{K_I}s^2)}{S}
+			\label{eq:PIDriscritto}
+		\end{equation}
+		
+		\noindent e definendo $\tau_I=\frac{K_P}{K_I}$ il tempo dell'azione integrale ,$\tau_D=\frac{K_D}{K_P}$ il tempo dell'azione derivativa e nell'ipotesi che $\tau_I>>\tau_D$ \footnote{Questa ipotesi è del tutto lecita, perché l'azione integrale ha appunto bisogno che l'integrale del segnale raggiunga valori significativi prima di intervenire. Mentre l'azione derivativa, soprattutto in un ingresso a gradino, agisce istantaneamente.} si ottiene 
+		
+		\begin{equation}
+			C(s)=\frac{K_I}{s}\bigl(1+\tau_Is+\tau_D\tau_Is^2\bigl) \approx \frac{K_I}{s}\bigl(1+\tau_Is\bigl)\bigl(1+\tau_Ds\bigl)
+			\label{eq:PIDtau}
+		\end{equation}
+		
+		\noindent Aggiungendo in fine il termine di non idealità $\tau_L$ della parte derivativa e nell'ulteriore ipotesi che $\tau_I>>\tau_D>>\tau_L$ \footnote{Anche questa ipotesi è lecita, visto che il polo si cerca di metterlo più in alta frequenza possibile.}
+		
+		\begin{equation}
+			C(s) \approx \frac{K_I(1+\tau_Is)(1+\tau_Ds)}{s(1+\tau_Ls)}
+			\label{eq:PIDfinale}
+		\end{equation}
+	
+		\noindent Perché il controllore dia i benefici desiderati, bisogna che sia soddisfatta la condizione $\tau_I>>\tau_D>>\frac{1}{\omega_a^{min}}>>\tau_L$ dove $\omega_a^{min}$ rappresenta la minima pulsazione di attraversamento richiesta nelle specifiche. Ciò comporta a scegliere
+		
+		\begin{equation}
+			%\tikzmarkin{right delim frac}(0.1,-0.4)(-0.1,0.6)
+			\tau_L=\alpha\frac{1}{\omega_a^min} \singleSpacing, \trippleSpacing \frac{1}{3}\le\alpha\le\frac{1}{10}
+			%\tikzmarkend{right delim frac}
+			\label{eq:tauL}
+		\end{equation}
+		
+		\noindent Si definisce poi 
+		\begin{equation}
+			a=\frac{1}{|P(j\omega_a)|} \trippleSpacing \trippleSpacing \trippleSpacing \theta=\arg\bigl[C(j\omega_a)\bigl]=m_{\phi}^G-180°-\arg\bigl[P(j\omega_A)\bigl]
+		\end{equation}
+	
+		\noindent e riscrivendo la funzione di trasferimento del controllore nella variabile $j\omega$
+		
+		\begin{equation}
+			C(j\omega_a)=K_P-j\frac{K_I}{\omega_a}+j\omega_aK_D=K_P+j\bigl(\omega_aK_D-\frac{K_I}{\omega_a}\bigl)
+		\end{equation}
+		
+		\noindent si ottiene
+		
+		\begin{align}
+			\Re\Bigl[C(j\omega_a)\Bigl] &= a\cos\theta=K_P \\
+			\Im\Bigl[C(j\omega_a)\Bigl] &= a\sin\theta=\omega_aK_D-\frac{K_I}{\omega_a}
+			\label{eq:asen}
+		\end{align}
+	
+		\noindent L'equazione \ref{eq:asen} mi fornisce un grado di libertà nella scelta dei parametri $K_P$ e $K_D$, tenendo però conto di soddisfare $\tau_I>>\tau_D$. Solitamente si sceglie 
+		
+		\begin{equation}
+			\tau_I=b\tau_D \singleSpacing, \trippleSpacing b\ge4
+		\end{equation}
+	
+		\noindent stando attenti a non scegliere $b$ troppo grande, altrimenti avrei tempi di reiezione del disturbo troppo lunghi. Rimane solo da ricavare $K_I$, per fare ciò basta risolvere l'equazione
+		
+		\begin{equation}
+			K_Ia\sin\theta=\omega_a\frac{K_P^2}{b}-\frac{K_I^2}{\omega_a}
+		\end{equation}
+	
+		\noindent con $K_I$ incognita. Risolvendola si otterranno due valori, ma a noi interessa solo quello positivo e quindi
+		
+		\begin{equation}
+			K_I=\frac{a\omega_a}{2}\Biggl[\sqrt{\sin^2\theta+\frac{4}{b}\cos^2\theta}-\sin\theta\Biggl]
+		\end{equation}
+		
+		\noindent e allora
+		
+		\begin{equation}
+			K_D=\frac{K_P^2}{bK_I}
+		\end{equation}
+		
+		\noindent In questo caso però, le specifiche richieste non sono fornite in frequenza, ma in termini temporali. 
+		
+		\begin{align}
+			t_s &\le 30 \singleSpacing \textrm{[s] rispetto a $\pm1$ [gradi] dal valore a regime} \\
+			S   &\le 5 \singleSpacing \textrm{[gradi]}
+			%r   &= 10,\singleSpacing 50, \singleSpacing 120 \singleSpacing \textrm{[gradi]} \\
+			%d   &= \pm0.5 \singleSpacing \textrm{[Volt]}  
+		\end{align}
+		
+		\noindent Il tempo di assestamento viene trasformato in un limite alla banda passante minima che il sistema deve garantire. Visto che si considera un sistema del secondo ordine, è possibile approssimare la banda passante con la frequenza di taglio $\omega_a$ e ottenere:
+		
+		\begin{equation}
+			\omega_a^{min}= \frac{3}{\xi t_{s,max}}
+		\end{equation}
+		
+		\noindent dove $\xi$ rappresenta il coefficiente di smorzamento che può essere ottenuto a partire dalla massima sovraelongazione
+		utilizzando il seguente grafico:
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[scale=1.0]
+				\begin{axis}[grid=both, xlabel=$\xi$, ylabel=$S\singleSpacing \%$,]
+			    	\addplot[domain=0:1, blue, ultra thick] {100*e^((-3.14*x)/(1-x^2)^(1/2)};
+				\end{axis}
+			\end{tikzpicture}
+		\end{figure}
+		
+		\noindent Il vincolo sulla massima sovraelongazione invece può essere convertito in una richiesta sul minimo margine
+		di fase $m_{\phi}$ ammissibile utilizzando il seguente grafico:	
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[scale=1.0]
+				\begin{axis}[grid=both, xlabel=$m_{\phi}^G$, ylabel=$S\singleSpacing \%$,]
+			    	\addplot[domain=0:90, blue, ultra thick] {e^((-3.14*(tan(x)/(16*(tan(x))^2+16)^(1/4)))/((1-((tan(x)/(16*(tan(x))^2+16)^(1/4)))^2)^(1/2)))};
+				\end{axis}
+			\end{tikzpicture}
+		\end{figure}
+		
+		
+	\subsection{Progetto del controllore PID con desaturatore}
+	\label{subsec:Desaturatore}
+	
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto, node distance=1.6cm,>=latex']
+				\node [input, name=input] {};
+				\node [sum, right of=input] (sum1) {};
+				\node [input, name=dirama1, right of=sum1] {};
+				\node [block, right of=dirama1] (D) {$K_D\frac{s}{1+\tau_Ls}$};	
+				\node [block, above of=D] (P) {$K_P$};
+				\node [block, below of=D] (I) {$\frac{K_I}{s}$};
+				\node [sum, below of=dirama1] (sum2) {};
+				\node [sum, right of=D] (sum3) {};
+				\node [input, name=dirama2, right of=sum3] (dirama2) {};
+				\node [block, right of=dirama2] (saturatore) {saturatore};
+				\node [input, name=dirama3, right of=saturatore] {};
+				\node [block, right of=dirama3] (Ps) {$P(s)$};
+				\node [input, name=dirama4, right of=Ps] {};
+				\node [output, name=output, right of=dirama4] {};
+				\node [sum, below of=dirama2] (sum4) {};
+				\node [input, name=fittizio, below of=sum4] {};	
+				\node [block, left of=fittizio] (Ka) {$K_a$};
+				\node [input, name=fittizio2, below of=Ka] {};
+
+				\draw [->] (input) --  node[pos=0.05] {$r(t)$}  node[pos=0.91] {$+$} (sum1) {};
+				\draw [-] (sum1) --  node[pos=0.3] {$e(t)$} (dirama1) {};
+				\draw [->] (dirama1) |- (P) {};
+				\draw [->] (dirama1) -- (D) {};
+				\draw [->] (dirama1) --  node[pos=0.95] {$+$} (sum2) {};
+				\draw [->] (P) -| (sum3) {};
+				\draw [->] (D) -- (sum3) {};
+				\draw [->] (I) -| (sum3) {};
+				\draw [->] (sum2) -- (I) {}; 
+				\draw [-] (sum3) --  node[pos=0.5] {$u_{PID}(t)$} (dirama2) {};
+				\draw [->] (dirama2) -- (saturatore) {};
+				\draw [-] (saturatore) --  node[pos=0.6] {$u(t)$} (dirama3) {};
+				\draw [->] (dirama3) -- (Ps) {};
+				\draw [-] (Ps) -- (dirama4) {};
+				\draw [->] (dirama4) --  node[pos=0.95] {$y(t)$} (output) {};
+				\draw [->] (dirama2) --  node[pos=0.95] {$+$} (sum4) {}; 	
+				\draw [-] (sum4) -- (fittizio) {};	
+				\draw [->] (fittizio) -- (Ka) {};
+				\draw [->] (Ka) -|  node[pos=0.95] {$-$} (sum2) {};
+				\draw [->] (dirama3) |-  node[pos=0.95] {$-$} (sum4) {};	
+				\draw [-] (dirama4) |- (fittizio2) {};
+				\draw [->] (fittizio2) -|  node[pos=0.98] {$-$} (sum1) {};
+			\end{tikzpicture}
+			\caption{Schema a blocchi di un controllore PID con desaturatore}
+			\label{fig:PIDdesaturatore}
+		\end{figure}
+	
+		\noindent Il motore utilizzato in laboratorio è comandato con un segnale di tensione, tale segnale deve essere compreso tra un intervallo di valori pari a $[-5,5]$ Volt. Ciò significa che è necessario saturare il segnale di controllo con un dispositivo denominato saturatore. Saturando l'ingresso al motore, l'errore $e(t)$ che comanda il controllore tende a diminuire più lentamente e il suo integrale sarà allora maggiore. Questo vuol dire che amplifica l'azione integrale durante la saturazione, rendendo il sistema più instabile. Per ovviare a questo introduco un secondo controllo in retroazione che interviene solo in caso di saturazione, lo schema di tale controllo è presente in Figura \ref{fig:PIDdesaturatore}. Questa retroazione diminuisce il termine integrale per un fattore proporzionale alla differenza tra l'uscita del controllore e la vera uscita che riceve il motore. Rimane quindi da scegliere la variabile $K_a$. Con qualche passaggio algebrico è possibile scrivere la funzione di trasferimento tra l'uscita del controllore $U_{PID}(s)$ e l'errore $E(s)$ in presenza di saturazione come   
+	
+		\begin{equation}
+			U_{PID}(s)=\frac{K_P+K_Ds+\frac{K_I}{s}}{1+\frac{K_aK_I}{s}}E(s)
+			\label{eq:Upid}
+		\end{equation}
+	
+		\noindent Si vede dall'equazione \ref{eq:Upid} che il parametro $K_a$ introduce un filtro passa basso che tende a rallentare il controllo. Allora si definisce la costante temporale del desaturatore $\tau_a=K_aK_I$ e quello che si vuole è che $\tau_a<t_r$. Tipicamente si sceglie
+		
+		\begin{equation}
+			\tau_a \approx \frac{1}{3}t_r \trippleSpacing \Rightarrow \trippleSpacing K_a \approx \frac{1}{3t_rK_I}
+		\end{equation}
+		
+		
+		
+		
+		
+		
+\section{Progettazione in spazio di stato}
+\label{sec:spazioDiStato}	
+
+	In questa sessione si procede alla realizzazione di un controllore in spazio di stato.
+	
+	\subsection{Modellizzazione in spazio di stato}
+	\label{subsec:ModelloStato}
+	
+		Una delle possibili rappresentazioni di un processo, insieme a quella in funzione di trasferimento usata fin'ora, è quella in spazio di stato. E' possibile scrivere il sistema come una coppia di equazioni lineari descritte come
+		
+		\begin{equation}
+			\begin{cases}
+				\dot{x}(t)=Ax(t)+Bu(t) \\
+				y(t)=Cx(t)+Du(t)
+			\end{cases}
+		\end{equation}	
+		
+		\noindent dove $x(t)$ è lo stato, $u(t)$ l'ingresso e $y(t)$ l'uscita. Si dimostra che il processo in funzione di trasferimento può essere scritto come $P(s)=C(sI-A)^{-1}B+D$, ma quello che tipicamente si fa, è di ricavare direttamente le il modello dalle equazioni fisiche. Si procederà anche qui in questo modo. Le equazioni fisiche del motore, ricavate nella sessione \ref{sec:Modelizzazione}, sono divise in quattro parti:
+		
+		\begin{itemize}
+			\item elettrica: $V_m(t)=Ri(t)+k_{\phi}^{eq}\dot{\Theta}_l$
+			\item elettromeccanica: $\tau_l(t)=k_{\phi}^{eq}i(t)$
+			\item meccanica: $J_{eq}\ddot{\Theta}_l=-b_{eq}\dot{\Theta}_l+\tau_l(t)$
+			\item sensore: $V_{out}(t)=K_T\Theta_l$
+		\end{itemize}  
+		
+		\noindent Come stato si è preso l'angolo del carico e la sue velocità angolare, $x=[\Theta_l \singleSpacing \dot{\Theta}_l]^T$, come ingresso $u=V_m$ e come uscita $y=V_{out}$. Si può riscrivere le prime tre equazioni nel seguente modo
+		
+		\begin{gather}
+			i(t)=\frac{V_m(t)-k_{\phi}^{eq}\dot{\Theta}_l(t)}{R} \\
+			\tau_l(t)=k_{\phi}^{eq}\Bigl(\frac{1}{R}V_m(t)-\frac{k_{\phi}^{eq}}{R}\dot{\Theta}_l\Bigl) \\
+			J_{eq}\ddot{\Theta}_l=-b_{eq}\dot{\Theta}_l+\frac{k_{\phi}^{eq}}{R}V_m(t)-\frac{(k_{\phi}^{eq})^2}{R}\dot{\Theta}_l=-\Bigl(b_{eq}+\frac{(k_{\phi}^{eq})^2}{R}\Bigl)\dot{\Theta}_l(t)+\frac{k_{\phi}^{eq}}{R}V_m(t)
+		\end{gather}  
+		
+		\noindent e allora
+		
+		\begin{equation}
+			\begin{cases}
+				\ddot{\Theta}_l(t)=-\Bigl(\frac{b_{eq}}{J_{eq}}+\frac{(k_{\phi}^{eq})^2}{R}\Bigl)\dot{\Theta}_l(t)+\frac{k_{\phi}^{eq}}{R}V_m(t) \\
+				V_{out}(t)=K_T\Theta_l
+			\end{cases}
+		\end{equation}
+		
+		\noindent e riscrivendo il tutto in forma di stato esplicitando le matrici $A$, $B$, $C$ e $D$, si ottiene
+		
+		\begin{equation}
+			\begin{cases}
+				\begin{bmatrix}
+					\dot{\Theta}_l(t)  \\
+					\ddot{\Theta}_l(t) \\
+				\end{bmatrix}
+				=
+				\begin{bmatrix}
+					0 & 1                                  \\
+					0 & -\frac{b_{eq}}{J_{eq}}-\frac{(k_{\phi}^{eq})^2}{R} \\
+				\end{bmatrix}
+				\begin{bmatrix}
+					\Theta_l(t)       \\
+					\dot{\Theta}_l(t) \\
+				\end{bmatrix}	
+				+
+				\begin{bmatrix}
+					0                       \\
+					\frac{k_{\phi}^{eq}}{R} \\
+				\end{bmatrix}
+				V_m(t) \\
+				V_{out}(t)=
+				\begin{bmatrix}
+					k_T & 0 \\
+				\end{bmatrix}
+				\begin{bmatrix}
+					\Theta_l(t)       \\
+					\dot{\Theta}_l(t) \\
+				\end{bmatrix}
+				+
+				\begin{bmatrix}
+					0 \\
+				\end{bmatrix}
+				V_m(t)											
+			\end{cases}
+		\end{equation}
+		
+		\noindent Essendo questo un sistema \textit{SISO}, la matrice di raggiungibilità ha rango pieno se e solo se il suo determinante è pari a zero. In questo caso
+		
+		\begin{equation}
+			\mathcal{R}=[A|AB]=
+			\begin{bmatrix}
+				0 & \frac{k_{\phi}^{eq}}{RJ_{eq}} \\
+				\frac{k_{\phi}^{eq}}{RJ_{eq}} & \star \\
+			\end{bmatrix}
+		\end{equation}
+		
+		\noindent ha rango 2, il che implica che il sistema considerato è raggiungibile. Lo stesso valo per la matrice di osservabilità
+		
+		\begin{equation}
+			\mathcal{O}=
+			\left[
+			\begin{array}{cc}
+				C  \\ \hline
+				CA \\
+			\end{array}
+			\right]
+			=
+			\begin{bmatrix}
+				k_T & 0   \\
+				0   & k_T \\
+			\end{bmatrix}
+		\end{equation} 
+		
+		\noindent che ha rango pieno, il  che implica un sistema osservabile. La raggiungibilità ci garantisce che per ogni condizione iniziale, posso portare il sistema in qualunque stato. Mentre l'osservabilità ci permette di ricavare lo stato conoscendo gli ingressi e le uscite.
+		
+	\subsection{Controllo in feedforward}
+	\label{sub:feedforward}
+		
+		La rappresentazione in spazio di stato permette di fare una retroazione di stato invece che una retroazione dell'uscita, ed è proprio quello che si fa nel \textit{controllo in feedforward}. 
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+				\node [input, name=input] {};
+				\node [block, right of=input] (N) {$\bar{N}$};
+				\node [sum, right of=N] (sum) {};
+				\node [block, right of=sum] (xd) {$\dot{x}=Ax+Bu$};
+				\node [block, below of=xd] (u) {$u=Kx$};
+				\node [input, name=dirama, right of=xd] {};
+				\node [block, right of=dirama] (y) {$y=Cx+Du$};
+				\node [output, name=output, right of=y] {};
+				
+				\draw [->] (input) -- node[pos=0.05] {$r(t)$} (N) {};
+				\draw [->] (N) -- node[pos=0.4] {$u_{ext}(t)$} node[pos=0.95] {$+$} (sum) {}; 
+				\draw [->] (sum) -- node[pos=0.4] {$u(t)$} (xd) {};
+				\draw [-] (xd) -- node[pos=0.5] {$x(t)$} (dirama) {};
+				\draw [->] (dirama) |- (u) {};
+				\draw [->] (u) -| node[pos=0.95] {$-$} (sum) {};
+				\draw [->] (dirama) -- (y) {};
+				\draw [->] (y) -- node[pos=0.95] {$y(t)$} (output) {};	
+			\end{tikzpicture}
+			\caption{Schema a blocchi di un controllo in feedforward.}
+			\label{fig:feedforward}
+		\end{figure}
+		
+		\noindent Con una retroazione dallo stato, il controllo, e quindi la matrice $K$, viene scelta piazzando i poli in catena chiusa del sistema. Ricordando che un processo può essere scritto in forma di stato come $P(s)=C(sI-A)^{-1}B$, si nota immediatamente che i poli corrispondono agli autovalori  di $sI-A$. Nel sistema complessivo retroazionato, tali autovalori sono di $sI-A+BK$. Il controllo in feedforward, oltre al piazzamento dei poli permette di modificare anche un parametro scalare $\bar{N}$.
+		\newline
+		bla bla bla bla
+		
+	\subsection{Controllo integrale}
+	\label{subsec:ControlloIntegrale}
+	
+\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[auto, node distance=1.45cm,>=latex']
+			\node [input, name=input] {};
+			\node [sum, right of=input] (sum1) {};
+			\node [block, right of=sum1] (int) {$\int{}^{}$};
+			\node [block, right of=int] (kI) {$K_I$};
+			\node [sum, right of=kI] (sum2) {};
+			\node [output, name=fittizio3, right of=sum2]{};
+			\node [sum, right of=fittizio3] (sum3) {};
+			\node [output, name=fittizio0, right of=sum3]{};
+			\node [block, right of=fittizio0] (sistema){$\dot x=Ax+Bu$};
+			\node [block, above of=sistema] (disturbo) {$d(t)$};
+			\node [block, below of=sistema] (K) {$K$};
+			\node [output, name=fittizio, below of=K] {};
+			\node [output, name=dirama1, right of=sistema] {};
+			\node [block, right of=dirama1] (C){$y=Cx$};
+			\node [output, name=dirama2, right of=C] {};
+			\node [output, name=output, right of=dirama2] {};
+			
+			\draw [->] (input) -- node[pos=0.05] {$r(t)$} node[pos=0.95] {$+$}(sum1) {};
+			\draw [->] (sum1) -- node[pos=0.5] {$e(t)$} (int) {};
+			\draw [->] (int) -- node[pos=0.5] {$-x_I$}(kI) {};
+			\draw [->] (kI) -- node[pos=0.95] {$+$} (sum2) {};
+			\draw [-] (sum2) --  node[pos=0.95] {$u_{ext}(t)$} (fittizio3) {};
+			\draw [->] (fittizio3) -- node[pos=0.95] {$+$}(sum3){};
+			\draw [->] (disturbo) -|node[pos=0.95] {$+$} (sum3){};
+			\draw [-] (sum3) -- node[pos=0.5] {$u(t)$}(fittizio0){};
+			\draw [->] (fittizio0) -- (sistema){};
+			\draw [-] (sistema) -- (dirama1){};
+			\draw [->] (dirama1) -- node[pos=0.3] {$x(t)$} (C){};
+			\draw [->] (dirama1) |- (K){};
+			\draw [->] (K) -| node[pos=0.95] {$-$}(sum2){};
+			\draw [-] (C) -- (dirama2){};	
+			\draw [->] (dirama2) -- (output) {};
+ 			\draw [-] (dirama2) |- (fittizio){};
+ 			\draw [->] (fittizio) -| node[pos=0.95] {$-$} (sum1){}; 
+			\draw [->] (C) -- node[pos=0.95] {$y(t)$}(output){};	
+		\end{tikzpicture}
+		\caption{Schema a blocchi di un controllo integrale}
+		\label{fig:integrale}
+	\end{figure}	
+	
+	
+	
+	%\begin{tikzpicture}
+	%\begin{axis}[
+  	%	only marks,                    % no lines
+  	%	xmin=-200, xmax=110,                % x-axis limits
+  	%	ymin=-2000, ymax=11000,              % y-axis limits
+  	%	xlabel={Dissimilarities},      % x-axis label
+  	%	ylabel={Distances},            % y-axis label
+  	%	title={Morse Signal Analysis}, % plot title
+  	%	legend pos=north west,         % legend position on plot
+  	%	legend cell align=left,        % text alignment within legend
+  	%	samples=5000,                  % plot 200 samples
+	%	]
+	%\addplot[blue] table {./simulazioni/6.1/angolo_motore_PID_es_6_1_r=10.dat};
+	%\end{axis}
+%\end{tikzpicture}
+			
+		
+					
+
+\end{document}
+
+	
