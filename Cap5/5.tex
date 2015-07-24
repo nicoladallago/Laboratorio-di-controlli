@@ -1,0 +1,105 @@
+\section{Progettazione in spazio di stato}
+\label{sec:spazioDiStato}	
+
+	In questa sessione si procede alla realizzazione di un controllore in spazio di stato.
+	
+	
+		
+	\subsection{Controllo in feedforward}
+	\label{sub:feedforward}
+		
+		La rappresentazione in spazio di stato permette di fare una retroazione di stato invece che una retroazione dell'uscita, ed è proprio quello che si fa nel \textit{controllo in feedforward}. 
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+				\node [input, name=input] {};
+				\node [block, right of=input] (N) {$\bar{N}$};
+				\node [sum, right of=N] (sum) {};
+				\node [block, right of=sum] (xd) {$\dot{x}=Ax+Bu$};
+				\node [block, below of=xd] (u) {$u=Kx$};
+				\node [input, name=dirama, right of=xd] {};
+				\node [block, right of=dirama] (y) {$y=Cx+Du$};
+				\node [output, name=output, right of=y] {};
+				
+				\draw [->] (input) -- node[pos=0.05] {$r(t)$} (N) {};
+				\draw [->] (N) -- node[pos=0.4] {$u_{ext}(t)$} node[pos=0.95] {$+$} (sum) {}; 
+				\draw [->] (sum) -- node[pos=0.4] {$u(t)$} (xd) {};
+				\draw [-] (xd) -- node[pos=0.5] {$x(t)$} (dirama) {};
+				\draw [->] (dirama) |- (u) {};
+				\draw [->] (u) -| node[pos=0.95] {$-$} (sum) {};
+				\draw [->] (dirama) -- (y) {};
+				\draw [->] (y) -- node[pos=0.95] {$y(t)$} (output) {};	
+			\end{tikzpicture}
+			\caption{Schema a blocchi di un controllo in feedforward.}
+			\label{fig:feedforward}
+		\end{figure}
+		
+		\noindent Con una retroazione dallo stato, il controllo, e quindi la matrice $K$, viene scelta piazzando i poli in catena chiusa del sistema. Ricordando che un processo può essere scritto in forma di stato come $P(s)=C(sI-A)^{-1}B$, si nota immediatamente che i poli corrispondono agli autovalori  di $sI-A$. Nel sistema complessivo retroazionato, tali autovalori sono di $sI-A+BK$. Il controllo in feedforward, oltre al piazzamento dei poli permette di modificare anche un parametro scalare $\bar{N}$.
+		\newline
+		bla bla bla bla
+		
+	\subsection{Controllo integrale}
+	\label{subsec:ControlloIntegrale}
+	
+\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[auto, node distance=1.45cm,>=latex']
+			\node [input, name=input] {};
+			\node [sum, right of=input] (sum1) {};
+			\node [block, right of=sum1] (int) {$\int{}^{}$};
+			\node [block, right of=int] (kI) {$K_I$};
+			\node [sum, right of=kI] (sum2) {};
+			\node [output, name=fittizio3, right of=sum2]{};
+			\node [sum, right of=fittizio3] (sum3) {};
+			\node [output, name=fittizio0, right of=sum3]{};
+			\node [block, right of=fittizio0] (sistema){$\dot x=Ax+Bu$};
+			\node [block, above of=sistema] (disturbo) {$d(t)$};
+			\node [block, below of=sistema] (K) {$K$};
+			\node [output, name=fittizio, below of=K] {};
+			\node [output, name=dirama1, right of=sistema] {};
+			\node [block, right of=dirama1] (C){$y=Cx$};
+			\node [output, name=dirama2, right of=C] {};
+			\node [output, name=output, right of=dirama2] {};
+			
+			\draw [->] (input) -- node[pos=0.05] {$r(t)$} node[pos=0.95] {$+$}(sum1) {};
+			\draw [->] (sum1) -- node[pos=0.5] {$e(t)$} (int) {};
+			\draw [->] (int) -- node[pos=0.5] {$-x_I$}(kI) {};
+			\draw [->] (kI) -- node[pos=0.95] {$+$} (sum2) {};
+			\draw [-] (sum2) --  node[pos=0.95] {$u_{ext}(t)$} (fittizio3) {};
+			\draw [->] (fittizio3) -- node[pos=0.95] {$+$}(sum3){};
+			\draw [->] (disturbo) -|node[pos=0.95] {$+$} (sum3){};
+			\draw [-] (sum3) -- node[pos=0.5] {$u(t)$}(fittizio0){};
+			\draw [->] (fittizio0) -- (sistema){};
+			\draw [-] (sistema) -- (dirama1){};
+			\draw [->] (dirama1) -- node[pos=0.3] {$x(t)$} (C){};
+			\draw [->] (dirama1) |- (K){};
+			\draw [->] (K) -| node[pos=0.95] {$-$}(sum2){};
+			\draw [-] (C) -- (dirama2){};	
+			\draw [->] (dirama2) -- (output) {};
+ 			\draw [-] (dirama2) |- (fittizio){};
+ 			\draw [->] (fittizio) -| node[pos=0.95] {$-$} (sum1){}; 
+			\draw [->] (C) -- node[pos=0.95] {$y(t)$}(output){};	
+		\end{tikzpicture}
+		\caption{Schema a blocchi di un controllo integrale}
+		\label{fig:integrale}
+	\end{figure}	
+	
+	
+	
+	%\begin{tikzpicture}
+	%\begin{axis}[
+  	%	only marks,                    % no lines
+  	%	xmin=-200, xmax=110,                % x-axis limits
+  	%	ymin=-2000, ymax=11000,              % y-axis limits
+  	%	xlabel={Dissimilarities},      % x-axis label
+  	%	ylabel={Distances},            % y-axis label
+  	%	title={Morse Signal Analysis}, % plot title
+  	%	legend pos=north west,         % legend position on plot
+  	%	legend cell align=left,        % text alignment within legend
+  	%	samples=5000,                  % plot 200 samples
+	%	]
+	%\addplot[blue] table {./simulazioni/6.1/angolo_motore_PID_es_6_1_r=10.dat};
+	%\end{axis}
+%\end{tikzpicture}
+			
