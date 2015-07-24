@@ -65,7 +65,7 @@
 		\begin{equation}
 			\begin{cases}
 				V_m(s) = RI(s) +sLI(s) + k_{\phi}\Omega(s)\\
-				Js\Omega(s) = -b\Omega(s) + k_{phi}I(s)	
+				Js\Omega(s) = -b\Omega(s) + k_{\phi}I(s)	
 			\end{cases}
 			\label{eq:dinamecaComplessivaLaplace}
 		\end{equation}
@@ -109,6 +109,86 @@
 
 	\subsection{Modellizzazione del motoriduttore}
 	\label{subsec:ModellizzazioneMotoriduttore}
+	
+	\begin{figure}[!ht]
+		\centering
+		\begin{circuitikz}[american voltages]
+			%\draw [help lines] (-1,-2) grid (12,5);
+
+			% circuito elettrico
+			\draw (0,3) to[V, v_=$v_m(t)$] (0,0);
+			\draw (0,3) to[R, i>^=$i(t)$, l=$R$] (3,3);
+			\draw (3,3) to[L, l=$L$] (4,3);
+
+			\draw (4,3) -- (5,3);
+			\draw (5,3) to[V, v_=$f.e.m.$] (5,0);
+			\draw (0,0) -- (5,0);
+
+			% motore
+			\draw[fill=black] (4.85,0.85) rectangle (5.15,2.15);
+			\draw[fill=white] (5,1.5) ellipse (.45 and .45);
+			\draw (5,1.67) node {$-$};
+			\draw (5,1.3) node {$+$};
+
+			% transmission gear one
+			\draw[fill=black!50] (6.7,1.49) ellipse (.08 and 0.33);
+			\draw[fill=black!50, color=black!50] (6.7,1.82) rectangle (6.5,1.16);
+			\draw[fill=white] (6.5,1.49) ellipse (.08 and 0.33);
+			\draw (6.5,1.82) -- (6.7,1.82);
+			\draw (6.5,1.16) -- (6.7,1.16);
+
+			% albero
+			\draw[fill=black] (5.45,1.45) rectangle (6.5,1.55);
+
+			% freccia angolata 1
+			\draw[line width=0.7pt,<-] (5.8,1) arc (-30:30:1);
+
+			% transmission gear two
+			\draw[fill=black!50] (6.7,0.49) ellipse (.13 and 0.67);
+			\draw[fill=black!50, color=black!50] (6.7,1.15) rectangle (6.5,-0.18);
+			\draw[fill=white] (6.5,0.49) ellipse (.13 and 0.67);
+			\draw (6.5,-0.18) -- (6.7,-0.18);
+
+			% albero 2
+			\draw[fill=black] (6.84,0.38) rectangle (7.8,0.48);
+
+			% carico
+			\draw[fill=white] (8.5,0.42) ellipse (.15 and 0.4);
+			\draw[fill=white, color=white] (7.9, 0.82) rectangle (8.49, 0.02);
+			\draw (7.8,0.42) ellipse (.15 and 0.4);
+			\draw (7.8,0.82) -- (8.5,0.82);
+			\draw (7.8,0.02) -- (8.5,0.02);
+
+			% freccia angolata 2
+			\draw[line width=0.7pt,->] (7.2,-0.07) arc (-30:30:1);
+
+			% descrizione parole
+			\draw (5.85,2.2) node {$\omega_m$};
+			\draw (7.29,1.11) node {$\omega_l$};
+			%\draw (8.25,0.44) node {$J$};
+			%\draw (6.6,-0.5) node {$v$};
+
+			% descrizione con le graffe
+			\draw [decorate,
+				   decoration={brace,amplitude=10pt},
+			       xshift=0pt, 
+			   	   yshift=0pt
+			      ]
+				(5.5,-0.75) -- (-0.5,-0.75)
+				node[black,midway,yshift=-20pt]
+				{sistema elettromagnetico};
+			\draw [decorate,
+		    	   decoration={brace,amplitude=10pt},
+			   	   xshift=0pt, 
+			       yshift=0pt
+			  	  ]
+				(9,-0.75) -- (6,-0.75)
+				node[black,midway,yshift=-20pt]
+				{sistema meccanico};
+		\end{circuitikz}
+		\caption{Schema del motore}
+		\label{fig:motore}
+	\end{figure}	
 	
 		Tipicamente un motore non viene usato direttamente per comandare un carico, ma si utilizzano una coppia di ingranaggi necessari per adattare le prestazioni del motore alle specifiche di progetto; questo tipo di configurazione viene chiamata \textit{motoriduzione}. E' necessario quindi definire nuove variabili:
 	
@@ -181,13 +261,12 @@
 		\noindent $b_m$ e $b_l$ non sono noti a priori, ma per il nostro laboratorio vengono considerati nulli, come $L$. \newline
 		Come prima, anche in questo caso l'encoder ci fornisce la posizione angolare del carico e non la sua velocità, ma applicando gli stessi ragionamenti si può arrivare a formulare l'equazione finale del processo:	
 		
-		\begin{equation}
-			P_{\theta}(s) = 
-			%\tikzmarkin{right delim frac}(0.6,2.8)(-0.1,0.6)
-			\frac{Nk_{\phi}}{s\bigl( R(J_mN^2+J_l) \bigl) + N^2k_{\phi}^2}
-			%\tikzmarkend{right delim frac}
-			\label{eq:FunzioneTrasferimentoComplessiva}
-		\end{equation}
+		\begin{empheq}[box=%
+		\fbox]{equation}
+			P_{\theta}(s) =	\frac{Nk_{\phi}}{s\bigl( R(J_mN^2+J_l) \bigl) + N^2k_{\phi}^2}
+			\label{eq:FunzioneTrasferimentoComplessiva}	
+		\end{empheq}
+			
 		
 		\noindent mentre la vera funzione di trasferimento ``osservata'' dal motore è moltiplicata per il fattore $K_{r2v}$, risulta allora
 		
@@ -195,15 +274,69 @@
 			P_{\theta}'(s)= K_{r2v}\cdot P_{\theta}(s) \approx \frac{375}{s(s+40)}
 		\end{equation*}
 		
+		\noindent Per completezza, in figura \ref{fig:diagrammiMotore} è rappresentato l'andamento di modulo e fase della funzione di trasferimento $P_{\theta}'(s)$.		
+		
 		\begin{figure}[H]
 			\centering
-			\subfloat[][\emph{Diagramma di Bode del modulo.}]{\includegraphics[width=.48\textwidth]{./figure/bode_mag.png}}\label{subfig:diagrammaBode} \quad
-			\subfloat[][\emph{Diagramma di Bode della fase.}]{\includegraphics[width=.48\textwidth]{./figure/bode_phase.png}}\label{subfig:mappaZeriPoli}
-			\caption{Diagramma di Bode di modulo e fase del processo relativo al motore.}
+			\begin{tikzpicture}[xscale=10/3]
+				\begin{scope}[yscale=4/110]
+					\tikzset{
+						semilog lines/.style={thin, red},
+						semilog lines 2/.style={semilog lines,red!50 },
+						semilog half lines/.style={semilog lines 2,dotted},
+						semilog label x/.style={semilog lines,
+						below,font=\tiny, black},
+						semilog label y/.style={semilog lines,right,font=\tiny, black}
+						}
+					%\UnitedB
+					\semilog{0}{3}{-70}{40}
+					\BodeGraph[samples=100, black]{0:3} {\POAmpAsymp{9.375}{0.025}+\IntAmp{1}}
+					\BodeGraph[blue]{0:3}{\POAmp{9.375}{0.025}+\IntAmp{1}}
+						
+					\draw [latex-](1.6,-11)-++(0.1,5) node[right] {diagramma asintotico};
+					%\draw [latex-, blue](0.6,9)-++(0.1,5) node[right] {diagramma modulo};
+					
+					\node [below=6pt] at (1.5,-65) {$\omega$ \singleSpacing (rad/s)};
+					\node [rotate=90] at (-0.3,-15) {$20\log_{10}|P_{\theta}'(\text{j}\omega)|$ \singleSpacing (dB)};
+					
+					\draw[-] (0.6, 8) -| (0.7,  6);
+					\node at (1, 7) {$-20dB/dec$};
+					
+					\draw[-] (2.05, -30) -| (2.15, -34);
+					\node at (2.45, -34) {$-40dB/dec$};
+				\end{scope}
+			\end{tikzpicture}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[xscale=10/3]	
+				\begin{scope}[yshift=0.5cm,yscale=4/110]
+					\tikzset{
+						semilog lines/.style={thin, red},
+						semilog lines 2/.style={semilog lines,red!50 },
+						semilog half lines/.style={semilog lines 2,dotted },
+						semilog label x/.style={semilog lines,
+						below,font=\tiny, black},
+						semilog label y/.style={semilog lines,right,font=\tiny, black}
+						}				
+					%\UniteDegre
+					\semilog{0}{3}{-190}{-80}
+					\BodeGraph[samples=100, const plot, black]{0:3} {\POArgAsymp{9.375}{0.025}+\IntArg{1}}
+					\BodeGraph{0:3}{\POArg{9.375}{0.025}+\IntArg{1}}
+						
+					\draw [latex-](1.62,-111)-++(0.1,5) node[right] {diagramma asintotico};
+					%\draw [latex-, blue](1.58,-131)-++(0.1,5) node[right] {diagramma fase};
+					
+					\node [below=6pt] at (1.5,-187) {$\omega$ \singleSpacing (rad/s)};
+					\node [rotate=90] at (-0.3,-135) {$\angle  P_{\theta}'(\text{j}\omega)$ \singleSpacing (°)};					
+				\end{scope}
+			\end{tikzpicture}
+			\caption{Diagrammi di Bode di modulo e fase.}
 			\label{fig:diagrammiMotore}
 		\end{figure}	
 		
-		\noindent In figura \ref{fig:diagrammiMotore} è rappresentato l'andamento di modulo e fase della funzione di trasferimento $P_{\theta}'(s)$.
+		
 		
 	\subsection{Modellizzazione in spazio di stato}
 	\label{subsec:ModelloStato}

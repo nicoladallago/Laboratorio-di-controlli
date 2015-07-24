@@ -3,3 +3,11 @@ tesina.log
 *.out
 *.gz
 tesina.toc
+*.log
+*.gnuplot
+gnuplot/tesina/1.table
+*.table
+test/motore.pdf
+test/motore.tex
+test/bode.pdf
+test/bode.tex

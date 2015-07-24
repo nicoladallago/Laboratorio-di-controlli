@@ -11,7 +11,8 @@
 ./Cap2/2,
 ./Cap3/3,
 ./Cap4/4,
-./Cap5/5
+./Cap5/5,
+./Appendici/A
 }
 
 
@@ -37,12 +38,8 @@
 \usetikzlibrary{circuits}
 \usepackage{tabularx}
 \usepackage{pgfplots}
-
-
-% BODE
-\usetikzlibrary{intersections}
-\usetikzlibrary{calc}
-\usetikzlibrary{positioning}
+\usepackage[siunitx]{circuitikz}
+\usetikzlibrary{decorations.pathreplacing}
 
 
 % SCHEMA A BLOCCHI %
@@ -58,35 +55,6 @@
 \tikzstyle{my right of} = [right of=#1.east]
 
 
-%%%%%%%%%%%%%% MATLAB code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\usepackage{listings} % inserisce listati di programmi
-\definecolor{commenti}{rgb}{0.13,0.55,0.13}
-\definecolor{stringhe}{rgb}{0.63,0.125,0.94}
-\lstloadlanguages{Matlab}
-\lstset{% general command to set parameter(s)
-framexleftmargin=0mm,
-frame=single,
-keywordstyle = \color{blue},% blue keywords
-identifierstyle =, % nothing happens
-commentstyle = \color{commenti}, % comments
-stringstyle = \ttfamily \color{stringhe}, % typewriter type for strings
-showstringspaces = false, % no special string spaces
-emph = {for, if, then, else, end},
-emphstyle = \color{blue},
-firstnumber = 1, % numero della prima linea
-numbers =left, %  show number_line
-numberstyle = \tiny, % style of number_line
-stepnumber = 1, % one number_line after stepnumber
-numbersep = 5pt,
-language = {Matlab}, % per riconoscere la sintassi matlab
-extendedchars = true, % per abilitare caratteri particolari
-breaklines = true, % per mandare a capo le righe troppo lunghe
-breakautoindent = true, % indenta le righe spezzate
-breakindent = 30pt, % indenta le righe di 30pt
-}
-
-
 
 \hyphenation{italian}
 \lhead{Laboratorio di Controlli}
@@ -97,12 +65,6 @@ breakindent = 30pt, % indenta le righe di 30pt
 \usepackage{babel}
 
 \begin{document}
-
-
-% BODE
-\pgfdeclarelayer{background}
-\pgfdeclarelayer{foreground}
-\pgfsetlayers{background,main,foreground}
 
 
 
@@ -150,9 +112,9 @@ breakindent = 30pt, % indenta le righe di 30pt
 \include{./Cap5/5}
 	
 
+\appendix	
 		
-		
-		
+\include*{./Appendici/A}		
 		
 		
 		

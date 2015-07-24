@@ -3,6 +3,17 @@
 
 	In questa sessione si procede alla progettazione del controllore PID con desaturatore. 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	\subsection{Il controllore PID}
 	\label{subsec:introduzionePID}
 	
@@ -186,6 +197,22 @@
 		\end{table}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	\subsection{Progettazione in frequenza del controllore PID}
 	\label{sub:ProgettazionePID}
 	
@@ -277,29 +304,41 @@
 			\omega_a^{min}= \frac{3}{\xi t_{s,max}}
 		\end{equation}
 		
-		\noindent dove $\xi$ rappresenta il coefficiente di smorzamento che può essere ottenuto a partire dalla massima sovraelongazione
-		utilizzando il seguente grafico:
+		\noindent dove $\xi$ rappresenta il coefficiente di smorzamento. Il vincolo sul massima sovraelongazione invece può essere convertito in una richiesta sul minimo margine di fase $m_{\phi}$ ammissibile. Per la conversione si possono allora utilizzare i due grafici riportati in figura \ref{fig:mSxiS}. Per una spiegazione dettagliata su come si possono ricavare i due grafici è possibile consultare l'appendice ?????.
 		
 		\begin{figure}[H]
 			\centering
-			\begin{tikzpicture}[scale=1.0]
-				\begin{axis}[grid=both, xlabel=$\xi$, ylabel=$S\singleSpacing \%$,]
+			\begin{tikzpicture}[scale=1]
+				\begin{axis}[grid=both, xlabel=\phantom{$m_{\phi}^G$} $\xi$ \phantom{$m_{\phi}^G$}, ylabel=$S\singleSpacing \%$,enlargelimits=false]
 			    	\addplot[domain=0:1, blue, ultra thick] {100*e^((-3.14*x)/(1-x^2)^(1/2)};
 				\end{axis}
 			\end{tikzpicture}
-		\end{figure}
-		
-		\noindent Il vincolo sulla massima sovraelongazione invece può essere convertito in una richiesta sul minimo margine
-		di fase $m_{\phi}$ ammissibile utilizzando il seguente grafico:	
-		
-		\begin{figure}[H]
-			\centering
-			\begin{tikzpicture}[scale=1.0]
-				\begin{axis}[grid=both, xlabel=$m_{\phi}^G$, ylabel=$S\singleSpacing \%$,]
-			    	\addplot[domain=0:90, blue, ultra thick] {e^((-3.14*(tan(x)/(16*(tan(x))^2+16)^(1/4)))/((1-((tan(x)/(16*(tan(x))^2+16)^(1/4)))^2)^(1/2)))};
+			\begin{tikzpicture}[scale=1]
+				\begin{axis}[grid=both, xlabel=$m_{\phi}^G$, ylabel=$S\singleSpacing \%$,enlargelimits=false]
+			    	\addplot[domain=0:90, blue, ultra thick] {100*e^((-3.14*(tan(x)/(16*(tan(x))^2+16)^(1/4)))/((1-((tan(x)/(16*(tan(x))^2+16)^(1/4)))^2)^(1/2)))};
 				\end{axis}
 			\end{tikzpicture}
+			\caption{Relazione tra $m_{\phi}$ e $S$ e tra $\xi$ e $S$.}
+			\label{fig:mSxiS}
 		\end{figure}
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		
 		
 	\subsection{Progetto del controllore PID con desaturatore}
