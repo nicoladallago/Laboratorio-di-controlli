@@ -11,3 +11,6 @@ test/motore.pdf
 test/motore.tex
 test/bode.pdf
 test/bode.tex
+*.jpg
+Appendici/Spiegazione A/sisetma_2o_ordine_frequenza.pdf
+Appendici/Spiegazione A/sistema_2o_ordine_tempo.pdf

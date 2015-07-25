@@ -304,19 +304,34 @@
 			\omega_a^{min}= \frac{3}{\xi t_{s,max}}
 		\end{equation}
 		
-		\noindent dove $\xi$ rappresenta il coefficiente di smorzamento. Il vincolo sul massima sovraelongazione invece può essere convertito in una richiesta sul minimo margine di fase $m_{\phi}$ ammissibile. Per la conversione si possono allora utilizzare i due grafici riportati in figura \ref{fig:mSxiS}. Per una spiegazione dettagliata su come si possono ricavare i due grafici è possibile consultare l'appendice ?????.
+		\noindent dove $\xi$ rappresenta il coefficiente di smorzamento. Il vincolo sul massima sovraelongazione invece può essere convertito in una richiesta sul minimo margine di fase $m_{\phi}$ ammissibile. Per la conversione si possono allora utilizzare i due grafici riportati in figura \ref{fig:mSxiS}. Per una spiegazione dettagliata su come si possono ricavare i due grafici è possibile consultare l'appendice \ref{app:sistemaSecondoordine}.
 		
 		\begin{figure}[H]
 			\centering
 			\begin{tikzpicture}[scale=1]
+			    %\draw[help lines,step=.2] (0,0) grid (6,6);
+				
 				\begin{axis}[grid=both, xlabel=\phantom{$m_{\phi}^G$} $\xi$ \phantom{$m_{\phi}^G$}, ylabel=$S\singleSpacing \%$,enlargelimits=false]
 			    	\addplot[domain=0:1, blue, ultra thick] {100*e^((-3.14*x)/(1-x^2)^(1/2)};
+			    
+			    	\addplot[red, dashed] coordinates {(0,5) (0.68,5)};
+			    	\addplot[red, dashed] coordinates {(0.68,5) (0.68,0)};
 				\end{axis}
+				
+				\node[red] at (-0.22,.28) {$5$};
+				\node[red] at (4.7,-.25) {$0.7$};
 			\end{tikzpicture}
 			\begin{tikzpicture}[scale=1]
+				%\draw[help lines,step=.2] (0,0) grid (6,6);
 				\begin{axis}[grid=both, xlabel=$m_{\phi}^G$, ylabel=$S\singleSpacing \%$,enlargelimits=false]
 			    	\addplot[domain=0:90, blue, ultra thick] {100*e^((-3.14*(tan(x)/(16*(tan(x))^2+16)^(1/4)))/((1-((tan(x)/(16*(tan(x))^2+16)^(1/4)))^2)^(1/2)))};
+			    	
+			    	\addplot[red, dashed] coordinates {(0,5) (64,5)};
+			    	\addplot[red, dashed] coordinates {(64,5) (64,0)};
 				\end{axis}
+				
+				\node[red] at (-0.22,.28) {$5$};
+				\node[red] at (5.88,-.25) {$65$};
 			\end{tikzpicture}
 			\caption{Relazione tra $m_{\phi}$ e $S$ e tra $\xi$ e $S$.}
 			\label{fig:mSxiS}
