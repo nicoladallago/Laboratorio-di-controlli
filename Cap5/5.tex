@@ -35,55 +35,168 @@
 			\label{fig:feedforward}
 		\end{figure}
 		
-		\noindent Con una retroazione dallo stato, il controllo, e quindi la matrice $K$, viene scelta piazzando i poli in catena chiusa del sistema. Ricordando che un processo può essere scritto in forma di stato come $P(s)=C(sI-A)^{-1}B$, si nota immediatamente che i poli corrispondono agli autovalori  di $sI-A$. Nel sistema complessivo retroazionato, tali autovalori sono di $sI-A+BK$. Il controllo in feedforward, oltre al piazzamento dei poli permette di modificare anche un parametro scalare $\bar{N}$.
-		\newline
-		bla bla bla bla
+		\noindent Con una retroazione dallo stato, il controllo, e quindi la matrice $K$, viene scelta piazzando i poli in catena chiusa del sistema. Ricordando che un processo può essere scritto in forma di stato come $P(s)=C(sI-A)^{-1}B$, si nota immediatamente che i poli corrispondono agli autovalori  di $sI-A$. Nel sistema complessivo retroazionato, tali autovalori sono di $sI-A+BK$. Il controllo in feedforward, oltre al piazzamento dei poli permette di modificare anche un parametro scalare $\bar{N}$. Per comprendere lo scopo del parametro $\bar{N}$, si pensi di voler riuscire ad inseguire perfettamente un segnale di ingresso costante:
+		
+		\begin{align*}
+			&r(t)=cost \implies y_{DC}=cost \\
+			&y_{DC}=P_{CC}(0)r=-C(A-BK)^{-1}Br
+		\end{align*} 
+		
+		\noindent Per sistemi \textit{SISO} $-C(A-BK)^{-1}B$ si riduce ad uno scalare $c$ per cui $y=cr$ e quindi per poter inseguire il riferimento si usa in blocco $\bar{N}$ che cancella il termine $c$. $\bar{N}$ sarà allora scelto nel seguente modo
+		
+		\begin{equation}
+			\bar{N} = \frac{1}{-C(A-BK)^{-1}B}
+			\label{eq:Nbarra}
+		\end{equation}
 		
 	\subsection{Controllo integrale}
 	\label{subsec:ControlloIntegrale}
 	
-\begin{figure}[H]
-		\centering
-		\begin{tikzpicture}[auto, node distance=1.45cm,>=latex']
-			\node [input, name=input] {};
-			\node [sum, right of=input] (sum1) {};
-			\node [block, right of=sum1] (int) {$\int{}^{}$};
-			\node [block, right of=int] (kI) {$K_I$};
-			\node [sum, right of=kI] (sum2) {};
-			\node [output, name=fittizio3, right of=sum2]{};
-			\node [sum, right of=fittizio3] (sum3) {};
-			\node [output, name=fittizio0, right of=sum3]{};
-			\node [block, right of=fittizio0] (sistema){$\dot x=Ax+Bu$};
-			\node [block, above of=sistema] (disturbo) {$d(t)$};
-			\node [block, below of=sistema] (K) {$K$};
-			\node [output, name=fittizio, below of=K] {};
-			\node [output, name=dirama1, right of=sistema] {};
-			\node [block, right of=dirama1] (C){$y=Cx$};
-			\node [output, name=dirama2, right of=C] {};
-			\node [output, name=output, right of=dirama2] {};
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto, node distance=1.45cm,>=latex']
+				\node [input, name=input] {};
+				\node [sum, right of=input] (sum1) {};
+				\node [block, right of=sum1] (int) {$\int dt$};
+				\node [block, right of=int] (kI) {$K_I$};
+				\node [sum, right of=kI] (sum2) {};
+				\node [output, name=fittizio3, right of=sum2]{};
+				\node [sum, right of=fittizio3] (sum3) {};
+				\node [output, name=fittizio0, right of=sum3]{};
+				\node [block, right of=fittizio0] (sistema){$\dot x=Ax+Bu$};
+				\node [input, name=disturbo, above of=sum3] {};
+				\node [block, below of=sum3] (K) {$K$};
+				\node [output, name=fittizio, below of=K] {};
+				\node [output, name=dirama1, right of=sistema] {};
+				\node [block, right of=dirama1] (C){$y=Cx$};
+				\node [output, name=dirama2, right of=C] {};
+				\node [output, name=output, right of=dirama2] {};
 			
-			\draw [->] (input) -- node[pos=0.05] {$r(t)$} node[pos=0.95] {$+$}(sum1) {};
-			\draw [->] (sum1) -- node[pos=0.5] {$e(t)$} (int) {};
-			\draw [->] (int) -- node[pos=0.5] {$-x_I$}(kI) {};
-			\draw [->] (kI) -- node[pos=0.95] {$+$} (sum2) {};
-			\draw [-] (sum2) --  node[pos=0.95] {$u_{ext}(t)$} (fittizio3) {};
-			\draw [->] (fittizio3) -- node[pos=0.95] {$+$}(sum3){};
-			\draw [->] (disturbo) -|node[pos=0.95] {$+$} (sum3){};
-			\draw [-] (sum3) -- node[pos=0.5] {$u(t)$}(fittizio0){};
-			\draw [->] (fittizio0) -- (sistema){};
-			\draw [-] (sistema) -- (dirama1){};
-			\draw [->] (dirama1) -- node[pos=0.3] {$x(t)$} (C){};
-			\draw [->] (dirama1) |- (K){};
-			\draw [->] (K) -| node[pos=0.95] {$-$}(sum2){};
-			\draw [-] (C) -- (dirama2){};	
-			\draw [->] (dirama2) -- (output) {};
- 			\draw [-] (dirama2) |- (fittizio){};
- 			\draw [->] (fittizio) -| node[pos=0.95] {$-$} (sum1){}; 
-			\draw [->] (C) -- node[pos=0.95] {$y(t)$}(output){};	
-		\end{tikzpicture}
-		\caption{Schema a blocchi di un controllo integrale}
-		\label{fig:integrale}
-	\end{figure}	
+				\draw [->] (input) -- node[pos=0.05] {$r(t)$} node[pos=0.95] {$+$}(sum1) {};
+				\draw [->] (sum1) -- node[pos=0.5] {$e(t)$} (int) {};
+				\draw [->] (int) -- node[pos=0.5] {$-x_I$}(kI) {};
+				\draw [->] (kI) -- node[pos=0.95] {$+$} (sum2) {};
+				\draw [-] (sum2) --  node[pos=0.95] {$u_{ext}(t)$} (fittizio3) {};
+				\draw [->] (fittizio3) -- node[pos=0.95] {$+$}(sum3){};
+				\draw [->] (disturbo) -| node[pos=0.05] {$d(t)$} node[pos=0.95] {$+$} (sum3){};
+				\draw [-] (sum3) -- node[pos=0.5] {$u(t)$}(fittizio0){};
+				\draw [->] (fittizio0) -- (sistema){};
+				\draw [-] (sistema) -- (dirama1){};
+				\draw [->] (dirama1) -- node[pos=0.3] {$x(t)$} (C){};
+				\draw [->] (dirama1) |- (K){};
+				\draw [->] (K) -| node[pos=0.95] {$-$}(sum2){};
+				\draw [-] (C) -- (dirama2){};	
+				\draw [->] (dirama2) -- (output) {};
+ 				\draw [-] (dirama2) |- (fittizio){};
+ 				\draw [->] (fittizio) -| node[pos=0.95] {$-$} (sum1){}; 
+				\draw [->] (C) -- node[pos=0.95] {$y(t)$}(output){};	
+			\end{tikzpicture}
+			\caption{Schema a blocchi di un controllo integrale con rumore additivo $d(t)$}
+			\label{fig:integrale}
+		\end{figure}	
+	
+		\noindent Il controllo integrale è un altro esempio di controllore che sfrutta la retroazione di stato. Prendiamo in considerazione un sistema scritto in forma di stato, dove per semplicità si considera nulla la matrice $D$ \footnote{del tutto lecito visto che il sistema del motore ha appunto $D=0$}
+		
+		\begin{equation}
+			\begin{cases}
+				\dot{x}=Ax+Bu \\
+				y=Cx
+			\end{cases}
+			\label{eq:sistemaNoD}
+		\end{equation}
+	
+		\noindent Al sistema viene aggiunto un nuovo stato
+		
+		\begin{equation}
+			\dot{x}_I=e=y-r=Cx-r
+			\label{eq:NuovoStato}
+		\end{equation}
+	
+		\noindent ottenendo ancora un sistema dinamico. Si definisce allora un nuovo \textit{stato aumentato} $z \in \mathbb{R}^{n+1}$
+		
+		\begin{equation}
+			z=
+			\begin{bmatrix}
+				x_I \\
+				x
+			\end{bmatrix}
+			\label{eq:statoAumentato}
+		\end{equation}
+	
+		\noindent e supposto che l'ingresso sia composto da un ingresso di controllo e un disturbo, come in figura \ref{fig:integrale}, $u=u_{ext}+d$ si ottiene
+		
+		\begin{equation}
+			\begin{cases}
+				\dot{z}=A_zz+B_zu_z \\
+				y=C_zz
+			\end{cases}
+			\label{eq:sistemaIntegrale}
+		\end{equation}
+		
+		\noindent dove $u_z = \begin{bmatrix} u_{ext} \\ d \\ r \end{bmatrix} \in \mathbb{R}^3$ e $y_z=y$. Quindi esplicitando l'equazione \ref{eq:sistemaIntegrale} si ricava
+		
+		\begin{equation}
+			\begin{cases}
+				\begin{bmatrix}
+					\dot{x}_I \\
+					x
+				\end{bmatrix}
+				=
+				\begin{bmatrix}
+					0 & C \\
+					0 & A
+				\end{bmatrix}
+				\begin{bmatrix}
+					x_I \\
+					x
+				\end{bmatrix}
+				+
+				\begin{bmatrix}
+					0 & 0 & -1 \\
+					B & B & 0
+				\end{bmatrix}
+				\begin{bmatrix}
+					u_{ext} \\
+					d       \\
+					r
+				\end{bmatrix} \\
+				y=
+				\begin{bmatrix}
+					0 & C
+				\end{bmatrix}
+				\begin{bmatrix}
+					x_I \\
+					x
+				\end{bmatrix}
+			\end{cases}
+		\end{equation}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
