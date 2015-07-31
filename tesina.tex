@@ -12,7 +12,9 @@
 ./Cap3/3,
 ./Cap4/4,
 ./Cap5/5,
-./Appendici/A
+./Cap6/6,
+./Appendici/A,
+./Appendici/B
 }
 
 
@@ -41,6 +43,36 @@
 \usepackage{pgfplots}
 \usepackage[siunitx]{circuitikz}
 \usetikzlibrary{decorations.pathreplacing}
+
+
+%%%%%%%%%%%%%% MATLAB code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings} % inserisce listati di programmi
+\definecolor{commenti}{rgb}{0.13,0.55,0.13}
+\definecolor{stringhe}{rgb}{0.63,0.125,0.94}
+\lstloadlanguages{Matlab}
+\lstset{% general command to set parameter(s)
+framexleftmargin=0mm,
+frame=single,
+keywordstyle = \color{blue},% blue keywords
+identifierstyle =, % nothing happens
+commentstyle = \color{commenti}, % comments
+stringstyle = \ttfamily \color{stringhe}, % typewriter type for strings
+showstringspaces = false, % no special string spaces
+emph = {for, if, then, else, end},
+emphstyle = \color{blue},
+firstnumber = 1, % numero della prima linea
+numbers =left, %  show number_line
+numberstyle = \tiny, % style of number_line
+stepnumber = 1, % one number_line after stepnumber
+numbersep = 5pt,
+language = {Matlab}, % per riconoscere la sintassi matlab
+extendedchars = true, % per abilitare caratteri particolari
+breaklines = true, % per mandare a capo le righe troppo lunghe
+breakautoindent = true, % indenta le righe spezzate
+breakindent = 30pt, % indenta le righe di 30pt
+}
+
+\DeclareMathOperator*{\rank}{rank}
 
 
 % SCHEMA A BLOCCHI %
@@ -102,20 +134,22 @@
 
 \end{titlepage}
 
-\tableofcontents
 
+
+
+\tableofcontents
 
 \newpage
 \include*{./Cap1/1}
 \include*{./Cap2/2}
 \include{./Cap3/3}
-\include*{./Cap4/4}
-\include*{./Cap5/5}
+\include{./Cap4/4}
+\include{./Cap5/5}
+\include{./Cap6/6}
 	
-
-\appendix	
-		
-\include{./Appendici/A}		
+\appendix		
+\include{./Appendici/A}	
+\include{./Appendici/B}	
 		
 		
 		

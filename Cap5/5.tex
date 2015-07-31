@@ -1,7 +1,7 @@
-\section{Progettazione in spazio di stato}
+\section{Progettazione controllori in spazio di stato}
 \label{sec:spazioDiStato}	
 
-	In questa sessione si procede alla realizzazione di un controllore in spazio di stato.
+	In questa sessione si procede alla realizzazione di due tipi di controllori in spazio di stato.
 	
 	
 		
@@ -48,6 +48,24 @@
 			\bar{N} = \frac{1}{-C(A-BK)^{-1}B}
 			\label{eq:Nbarra}
 		\end{equation}
+		
+		\noindent Un possibile problema di questo tipo di controllo è che se non si conoscono perfettamente i valori nominali delle matrici $(A,B,C,D)$, a regime non si riesce ad inseguire perfettamente il riferimento, perchè
+		
+		\begin{equation}
+			y_{DC}=\bar{N}[-C(A-BK)^{-1}B]r_{DC}=\frac{C(A-BK)^{-1}B}{C_{nom}(A_{nom}-B_{nom}K)^{-1}B_{nom}}r_{DC} \ne r_{DC}
+		\end{equation}
+		
+		\noindent Un altro problema è se è presente un disturbo additivo $d(t)$ in ingresso al controllo, infatti risulterebbe
+		
+		\begin{equation}
+			y_{DC}=\alpha r_{DC} + \beta d_{DC}
+		\end{equation} 
+		
+		
+		
+		
+		
+		
 		
 	\subsection{Controllo integrale}
 	\label{subsec:ControlloIntegrale}
@@ -142,40 +160,104 @@
 					x
 				\end{bmatrix}
 				=
+				\underbrace{
 				\begin{bmatrix}
 					0 & C \\
 					0 & A
 				\end{bmatrix}
+				}_\text{$A_z$}
 				\begin{bmatrix}
 					x_I \\
 					x
 				\end{bmatrix}
 				+
+				\underbrace{
 				\begin{bmatrix}
 					0 & 0 & -1 \\
 					B & B & 0
 				\end{bmatrix}
+				}_\text{$B_z$}
 				\begin{bmatrix}
 					u_{ext} \\
 					d       \\
 					r
 				\end{bmatrix} \\
+				\\ %
 				y=
+				\underbrace{
 				\begin{bmatrix}
 					0 & C
 				\end{bmatrix}
+				}_\text{$C_z$}
 				\begin{bmatrix}
 					x_I \\
 					x
 				\end{bmatrix}
 			\end{cases}
+			\label{eq:sistemaComplessivo}
 		\end{equation}
 	
+		\noindent Se si definisce $B_z=\begin{bmatrix}B_{ext} & B_{ext} & B_r\end{bmatrix}$ e si sostituisce $u_{ext}=-K_zz$ in \ref{eq:sistemaComplessivo} si ottiene
+		
+		\begin{equation*}
+			\dot{z}=(A_z - B_{ext}K_z)z=
+			\begin{bmatrix}
+				B_{ext} | B_r
+			\end{bmatrix}
+			\begin{bmatrix}
+				d \\
+				r
+			\end{bmatrix}
+		\end{equation*}
+		
+		\noindent Quindi, se $A_z-B_{ext}K_z$ è strettamente stabile e gli ingressi sono costanti, $r(t)=r_{DC}$ e $d(t)=d_{DC}$, si rileva che il sistema $z \to z_{cost}$ a $ t \to \infty$.
+		\newline Di conseguenza $\dot{z}=\begin{bmatrix}\dot{x}_I \\ \dot{x}\end{bmatrix} \to 0$ che implica $\dot{x}_I \to 0$. Ricordando che $\dot{x}_I=Cx-r=y-r$ si trova che $y \to r$ ottenendo, quindi, un inseguimento perfetto a regime $y \to r \to r_{DC}$.  Se anche $A_z$ e $B_{ext}$ non sono note a priori la matrice $A_z-B_{ext}K_z$ rimane stabile per piccole incertezze, grazie alla \textit{proprietà di continuità} degli autovalori di $A$ rispetto gli elementi di $A$.	
+		\newline Rimane ora da verificare che $A_z-B_{ext}K_z$ sia strettamente stabile, questo avviene quando la coppia $(A_z,B_{ext})$ è raggiungibile e quindi con il \textit{criterio PBH} quando $\rank[sI-A_z|B_{ext}]=n+1$. Esplicitando
+		
+		\begin{equation}
+			\begin{bmatrix}
+				sI-A_z | B_{ext}
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+			s & -C   & 0 \\
+			0 & sI-A & B 
+			\end{bmatrix}
+		\end{equation}
+		
+		\noindent si divide la dimostrazione in due parti:
+		
+		\begin{itemize}
+			\item Se $s \ne 0$, $\rank[sI-A_z|B_{ext}]=n+1 \iff \rank[sI-A|B]=n \iff$ la coppia $(A,B)$ è raggiungibile \footnote{questa è una ipotesi necessaria per fare il controllo integrale.}.
+			
+			\item Se $s=0$, la prima colonna è ininfluente al calcolo e può essere rimossa. Inoltre una eventuale moltiplicazione di righe o colonne per $-1$ così come lo scambio di righe, non cambia il rango, quindi la raggiungibilità per $s=0$ è equivalente a verificare 
+			\begin{equation*}
+				\rank
+				\begin{bmatrix}
+					sI-A & -B \\
+					C    & 0 
+				\end{bmatrix}_{s=0}
+				=n+1
+			\end{equation*}
+			Il rango di questa matrice è $n+1$ se e solo se $s=0$ non è uno zero di $P(s)=C(sI-A)^{-1}B$ \footnote{ulteriore ipotesi necessaria per il controllo integrale.}
+		\end{itemize}
+		
+		\noindent Per quanto riguarda la matrice di retroazione $K$, se le due ipotesi sono verificate, esiste tale che $A_z-B_zK_z$ ha autovalori arbitrari e quindi
+		
+		\begin{equation}
+			u_{ext}(t)=-K_zz(t)=-
+			\begin{bmatrix}
+				K_I | K
+			\end{bmatrix}
+			\begin{bmatrix}
+				x_I(t) \\
+				x(t)
+			\end{bmatrix}
+			=-K_Ix_I(t)-Kx(t)
+		\end{equation}
 	
-	
-	
-	
-	
+		\noindent Si fa notare che il termine $-K_Ix_I$ può essere scritto come $-K_Ix_I(t)=-K_I\int y(t)-r(t)dt=K_I\int r(t)-y(t)dt$ e rappresentato graficamente in figura \ref{fig:integrale}. 
+		\newline  Questo modello risulta più lento rispetto al feed-forward perché l'errore integrale richiede un certo tempo prima che l'effeto sul controllo sia evidente.  
 	
 	
 	

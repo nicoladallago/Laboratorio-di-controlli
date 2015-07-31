@@ -57,12 +57,11 @@
 	
 		\noindent La funzione di trasferimento del controllore può essere scritta come:
 	
-		\begin{equation}
-			%\tikzmarkin{right delim frac}(0.1,-0.4)(-0.1,0.6)
+		\begin{empheq}[box=%
+		\fbox]{equation}
 			C(s) = K_P + \frac{K_I}{s} + \frac{K_D s}{1 + \tau _L s}
-			%\tikzmarkend{right delim frac}
 			\label{eq:PID}		
-		\end{equation}
+		\end{empheq}
 	
 		\noindent in cui sono presenti quattro parametri:
 		\begin{itemize}
@@ -239,12 +238,11 @@
 	
 		\noindent Perché il controllore dia i benefici desiderati, bisogna che sia soddisfatta la condizione $\tau_I>>\tau_D>>\frac{1}{\omega_a^{min}}>>\tau_L$ dove $\omega_a^{min}$ rappresenta la minima pulsazione di attraversamento richiesta nelle specifiche. Ciò comporta a scegliere
 		
-		\begin{equation}
-			%\tikzmarkin{right delim frac}(0.1,-0.4)(-0.1,0.6)
-			\tau_L=\alpha\frac{1}{\omega_a^min} \singleSpacing, \trippleSpacing \frac{1}{3}\le\alpha\le\frac{1}{10}
-			%\tikzmarkend{right delim frac}
+		\begin{empheq}[box=%
+		\fbox]{equation}
+			\tau_L=\alpha\frac{1}{\omega_a^{min}} \singleSpacing, \trippleSpacing \frac{1}{3}\le\alpha\le\frac{1}{10}
 			\label{eq:tauL}
-		\end{equation}
+		\end{empheq}
 		
 		\noindent Si definisce poi 
 		\begin{equation}
@@ -415,8 +413,9 @@
 			\label{eq:Upid}
 		\end{equation}
 	
-		\noindent Si vede dall'equazione \ref{eq:Upid} che il parametro $K_a$ introduce un filtro passa basso che tende a rallentare il controllo. Allora si definisce la costante temporale del desaturatore $\tau_a=K_aK_I$ e quello che si vuole è che $\tau_a<t_r$. Tipicamente si sceglie
+		\noindent Si vede dall'equazione \ref{eq:Upid} che il parametro $K_a$ introduce un filtro passa basso che tende a rallentare il controllo. Allora si definisce la costante temporale del desaturatore $\tau_a=K_aK_I$ e quello che si vuole è che $\tau_a<t_s$. Tipicamente si sceglie
 		
-		\begin{equation}
-			\tau_a \approx \frac{1}{3}t_r \trippleSpacing \Rightarrow \trippleSpacing K_a \approx \frac{1}{3t_rK_I}
-		\end{equation}
+		\begin{empheq}[box=%
+		\fbox]{equation}
+			\tau_a \approx \frac{1}{3}t_s \trippleSpacing \Rightarrow \trippleSpacing K_a \approx \frac{1}{3t_sK_I}
+		\end{empheq}

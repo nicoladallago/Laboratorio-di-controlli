@@ -1,0 +1,20 @@
+\section{Simulazione e esperienza in laboratorio}
+\label{sec:simLab}
+
+	In questa sezione si confrontano i dati ottenuti con le simulazioni sul modello del motore e quelli raccolti nell'esperienza di laboratorio, con quanto previsto dalla teoria. In particolare si vogliono testare le differenze prima tra l'uso di un controllore PID con desaturatore, controllo in feed-forward e controllo integrale.
+	
+	\subsection{Simulazione controllore PID con desaturatore}
+	\label{subsec:PIDvsPIDdesa}
+	
+		Si verificano le prestazioni di un controllo PID con desaturazione in simulazione, utilizzando il modello del motore ricavato nella sezione \ref{subsec:ModellizzazioneMotoriduttore}; in particolare si utilizzano il codice \textit{MATLAB} e i modelli \textit{SIMULINK} riportati rispettivamente nelle appendici \ref{subapp:controllorePID} e ??. 
+		\newline Le specifiche da rispettare sono:
+		
+		\begin{align*}
+			t_s &\le 0.30 [s] \trippleSpacing \textnormal{rispetto a $\pm 1 [gradi]$ del valore a regime} \\
+			S &\le 5 [gradi] \\
+			r &= 10,50,120 [gradi] \\
+			d &= \pm 0.5 [Volt] \\
+		\end{align*}
+		
+		\noindent dove $t_s$ è il tempo di assestamento, $S$ è la sovraelongazione in termini assoluti rispetto al valore di
+		riferimento, e $r$ è l'ampiezza del gradino di ingresso. Si utilizza allora la progettazione in frequenza, come nella sezione \ref{sub:ProgettazionePID} e \ref{subsec:Desaturatore} per il calcolo del parametro di desaturazione. 
