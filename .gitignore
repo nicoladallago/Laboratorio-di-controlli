@@ -15,3 +15,20 @@ test/bode.tex
 Appendici/Spiegazione A/sisetma_2o_ordine_frequenza.pdf
 Appendici/Spiegazione A/sistema_2o_ordine_tempo.pdf
 *.r2013a
+*.mat
+Codice/stampa.m
+Codice/4 simulazioni_raw/in_r_10_d_0_5.dat
+Codice/4 simulazioni_raw/in_r_120_d_0_5.dat
+Codice/4 simulazioni_raw/out_r_120_d__0_5.dat
+Codice/4 simulazioni_raw/out_r_50_d_0_5.dat
+Codice/4 simulazioni_raw/out_r_120_d_0_5.dat
+Codice/4 simulazioni_raw/out_r_10_d_0_5.dat
+Codice/4 simulazioni_raw/out_r_10_d__0_5.dat
+Codice/4 simulazioni_raw/in_r_50_d__0_5.dat
+Codice/4 simulazioni_raw/in_r_10_d__0_5.dat
+Codice/4 simulazioni_raw/in_r_120_d__0_5.dat
+Codice/4 simulazioni_raw/out_r_50_d__0_5.dat
+Codice/4 simulazioni_raw/in_r_50_d_0_5.dat
+*.bbl
+tesina.dvi
+*.blg

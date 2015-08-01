@@ -5,7 +5,6 @@ clc; clear all; close all;
 t_s_max = 0.3;                 % [s] rispetto a +-1%r
 S = 5;                         % percento
 
-
 %% funzione di trasferimento del motoriduttore
 P = tf(375, [1 40 0]);         % processo P 
 [numP, denP] = tfdata(P, 'v'); % estrae numeratore e denominatore
@@ -30,6 +29,11 @@ K_i = ((a * w_a_min) / 2) * (sqrt((sin(theta))^2 + ...
     (4/b)*(cos(theta))^2) - sin(theta)); % guadagno integrale
 K_d = K_p^2 / (b * K_i);       % guadagno derivativo 
 K_a = 1 / (3 * t_s_max * K_i); % guadagno desaturatore   
+
+%% ritaratura parametri PID
+K_p = K_p * 9
+K_i = K_i * 10
+K_d = K_d * 4.5
 
 %% simulazione
 step_time_input = 1;           % [s] step time dell'ingresso a gradino
