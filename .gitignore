@@ -32,3 +32,6 @@ Codice/4 simulazioni_raw/in_r_50_d_0_5.dat
 *.bbl
 tesina.dvi
 *.blg
+Codice/modello_motore_cerato.m
+Codice/simulink_lab2_4.mdl
+*.auxlock
