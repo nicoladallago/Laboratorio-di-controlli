@@ -309,27 +309,91 @@
 			\begin{tikzpicture}[scale=1]
 			    %\draw[help lines,step=.2] (0,0) grid (6,6);
 				
-				\begin{axis}[grid=both, xlabel=\phantom{$m_{\phi}^G$} $\xi$ \phantom{$m_{\phi}^G$}, ylabel=$S\singleSpacing \%$,enlargelimits=false]
+				\begin{axis}[grid=both, 
+							xlabel=\phantom{$m_{\phi}^G$} $\xi$ \phantom{$m_{\phi}^G$}, 
+							ylabel=$S\singleSpacing \%$,
+							enlargelimits=false,
+							legend pos=north east,         
+							legend cell align=left,     
+							legend entries={$r=10$, $r=50$, $r=120$},
+			  				xtick={0, 1},
+			  				xticklabels={$0$, $1$},							
+			  				every extra y tick/.style={
+			  		        	tick0/.initial=red,
+			  		        	tick1/.initial=green,
+			  		        	tick2/.initial=blue,
+			  		       		yticklabel style={
+			  		            	color=\pgfkeysvalueof{/pgfplots/tick\ticknum},
+			  		            	},},
+			  				extra y ticks ={50,10,4.17},
+			  				extra y tick labels={$50$, $10$, $4.17$},
+			  				every extra x tick/.style={
+			  		        	tick0/.initial=red,
+			  		        	tick1/.initial=green,
+			  		        	tick2/.initial=blue,
+			  		       		xticklabel style={
+			  		            	color=\pgfkeysvalueof{/pgfplots/tick\ticknum},
+			  		            	},},			  						
+			  				extra x ticks ={0.22,0.59,0.7},
+			  				extra x tick labels={$0.22$, $0.59$, $0.7$}			  							  		            								
+							]
+					\addplot[red, dashed] coordinates {(0,50) (0.22,50)};
+			    	\addplot[green, dashed] coordinates {(0,10) (0.59,10)};
+			    	\addplot[blue, dashed] coordinates {(0,4.17) (0.7,4.17)};
+			    	\addplot[red, dashed] coordinates {(0.22,50) (0.22,0)};
+			    	\addplot[green, dashed] coordinates {(0.59,10) (0.59,0)};
+			    	\addplot[blue, dashed] coordinates {(0.7,4.17) (0.7,0)};							
+			    	
 			    	\addplot[domain=0:1, blue, ultra thick] {100*e^((-3.14*x)/(1-x^2)^(1/2)};
-			    
-			    	\addplot[red, dashed] coordinates {(0,5) (0.68,5)};
-			    	\addplot[red, dashed] coordinates {(0.68,5) (0.68,0)};
+					    	
 				\end{axis}
 				
-				\node[red] at (-0.22,.28) {$5$};
-				\node[red] at (4.7,-.24) {$0.7$};
+				%\node[red] at (-0.3, 2.8) {$50$};
+				%\node[green] at (-0.3, 0.55) {$10$};
+				
 			\end{tikzpicture}
 			\begin{tikzpicture}[scale=1]
 				%\draw[help lines,step=.2] (0,0) grid (6,6);
-				\begin{axis}[grid=both, xlabel=$m_{\phi}^G$, ylabel=$S\singleSpacing \%$,enlargelimits=false]
+				\begin{axis}[grid=both, 
+							xlabel=$m_{\phi}^G$, 
+							ylabel=$S\singleSpacing \%$,
+							enlargelimits=false,
+							legend pos=north east,         
+							legend cell align=left,     
+							legend entries={$r=10$, $r=50$, $r=120$},
+			  				xtick={0},
+			  				xticklabels={$0$},								
+			  				every extra y tick/.style={
+			  		        	tick0/.initial=red,
+			  		        	tick1/.initial=green,
+			  		        	tick2/.initial=blue,
+			  		       		yticklabel style={
+			  		            	color=\pgfkeysvalueof{/pgfplots/tick\ticknum},
+			  		            	},},
+			  				extra y ticks ={50,10,4.17},
+			  				extra y tick labels={$50$, $10$, $4.17$},
+			  				every extra x tick/.style={
+			  		        	tick0/.initial=red,
+			  		        	tick1/.initial=green,
+			  		        	tick2/.initial=blue,
+			  		       		xticklabel style={
+			  		            	color=\pgfkeysvalueof{/pgfplots/tick\ticknum},
+			  		            	},},			  						
+			  				extra x ticks ={24,59,66},
+			  				extra x tick labels={$24$, $59$, $66$},			  		            				
+							]
+			    	\addplot[red, dashed] coordinates {(0,50) (24,50)};
+					\addplot[green, dashed] coordinates {(0,10) (58.5,10)};
+			    	\addplot[blue, dashed] coordinates {(0,4.17) (66,4.17)};
+			    	\addplot[red, dashed] coordinates {(24,50) (24,0)};
+			    	\addplot[green, dashed] coordinates {(58.5,10) (58.5,0)};
+			    	\addplot[blue, dashed] coordinates {(66,4.17) (66,0)};							
+							
 			    	\addplot[domain=0:90, blue, ultra thick] {100*e^((-3.14*(tan(x)/(16*(tan(x))^2+16)^(1/4)))/((1-((tan(x)/(16*(tan(x))^2+16)^(1/4)))^2)^(1/2)))};
-			    	
-			    	\addplot[red, dashed] coordinates {(0,5) (64,5)};
-			    	\addplot[red, dashed] coordinates {(64,5) (64,0)};
 				\end{axis}
 				
-				\node[red] at (-0.22,.28) {$5$};
-				\node[red] at (5.88,-.24) {$65$};
+				%\node[red] at (-0.22,.28) {$5$};
+				%\node[red] at (5.88,-.24) {$65$};
 			\end{tikzpicture}
 			\caption{Relazione tra $m_{\phi}$ e $S$ e tra $\xi$ e $S$.}
 			\label{fig:mSxiS}

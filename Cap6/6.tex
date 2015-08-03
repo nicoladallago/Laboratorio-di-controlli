@@ -1,10 +1,10 @@
 \section{Simulazione e esperienza in laboratorio}
 \label{sec:simLab}
 
-	In questa sezione si confrontano i dati ottenuti con le simulazioni sul modello del motore e quelli raccolti nell'esperienza di laboratorio, con quanto previsto dalla teoria. In particolare si vogliono testare le differenze prima tra l'uso di un controllore PID con desaturatore, controllo in feed-forward e controllo integrale.
+	In questa sezione si confrontano i dati ottenuti con le simulazioni sul modello del motore e quelli raccolti nell'esperienza di laboratorio con quanto previsto dalla teoria. In particolare si vogliono testare le differenze tra l'uso di un controllore PID con desaturatore, controllo in feed-forward e controllo integrale.
 	
 	\subsection{Simulazione controllore PID con desaturatore}
-	\label{subsec:PIDvsPIDdesa}
+	\label{subsec:PIDdesaSim}
 	
 		Si verificano le prestazioni di un controllo PID con desaturazione in simulazione, utilizzando il modello del motore ricavato nella sezione \ref{subsec:ModellizzazioneMotoriduttore}; in particolare si utilizzano il codice \textit{MATLAB} e i modelli \textit{SIMULINK} riportati rispettivamente nelle appendici \ref{subapp:controllorePID} e \ref{subapp:modelloPID}. 
 		\newline Le specifiche da rispettare sono:
@@ -18,8 +18,7 @@
 		
 		\noindent dove $t_s$ è il tempo di assestamento, $S$ è la sovraelongazione in termini assoluti rispetto al valore di
 		riferimento e $r$ è l'ampiezza del gradino di ingresso. Si utilizza allora la progettazione in frequenza, come nella sezione \ref{sub:ProgettazionePID} per il calcolo dei parametri PID e \ref{subsec:Desaturatore} per il calcolo del parametro di desaturazione. Ovviamente tale metodologia di progettazione prevede diversi gradi di libertà (la scelta di $\alpha \in [\frac{1}{3},\frac{1}{10}]
-		$ e $b \in [4, \infty)$) e introduce delle approssimazioni che possono rendere necessaria una taratura manuale dei parametri. Le simulazioni sono state suddivise per $d=0.5$ e $d=-0.5$. Nel primo caso l'uscita del sistema risulta più veloce ma con una sovraelongazione piuttosto marcata, mentre nel secondo è più lenta ma con meno sovraelongazione.
-		
+		$ e $b \in [4, \infty)$) e introduce delle approssimazioni che possono rendere necessaria una taratura manuale dei parametri. Le simulazioni sono state suddivise per $d=0.5$ e $d=-0.5$, nell'appendice \ref{subapp:PIDsimulazione} si possono osservare tutti i grafici e le tabelle delle simulazioni. Nel primo caso l'uscita del sistema risulta più veloce ma con una sovraelongazione piuttosto marcata, mentre nel secondo è più lenta ma con meno sovraelongazione. Questo si traduce nel fatto che le specifiche non sono rispettate per alcuni segnali di ingresso e si rende necessaria una ritaratura manuale dei parametri. Questa ritaratura però non è del tutto banale, in quanto bisogna diminuire la velocità del sistema per il primo caso e aumentarla nel secondo, si è cercato allora un compromesso. Si è data per prima cosa priorità al tempo di salita per $d=-0.5$ e $r=10$ che superava addirittura il secondo; si è aumentato allora il guadagno integrale per rendere il sistema più veloce. Questo ha però aumentato la sovraelongazione per $d=0.5$ di parecchio, ma per abbassarla si è aumentato anche il guadagno proporzionale, che prima era inferiore all'unità. Alla fine si è dovuto aumentare anche il guadagno proporzionale visto che risultava troppo basso rispetto gli altri due e la sua azione era quasi ininfluente. In conclusione la ritaratura ha portato dei risultati soddisfacenti, riportati nelle figure \ref{fig:PIDd_0_5} e \ref{fig:PIDd__0_5}. Nei grafici si può apprezzare come gli ingressi di controllo saturino quasi subito ma la sovraelongazione rimane comunque bassa grazie all'intervento del desaturatore.
 		
 		\begin{figure}[H]
 			\centering
@@ -28,10 +27,6 @@
 			\label{fig:PIDd_0_5}
 		\end{figure}
 		
-		\noindent In entrambi i casi si  nota comunque che gli ingressi di controllo saturano a $5 \singleSpacing [Volt]$ e per $r=120$ rimane saturo per un tempo considerevole rispetto l'evoluzione del sistema.
-		
-
-		
 		\begin{figure}[H]
 			\centering
 			\includestandalone[width=1\textwidth]{./simulazioni/4_d__0_5_tuned} 
@@ -39,6 +34,19 @@
 			\label{fig:PIDd__0_5}		
 		\end{figure}		
 		
+		
+		
+		
+	\subsection{Simulazione controllo in feedforward}	
+	\label{subsec:feedforwardSim}
+	
+		In questo caso si vogliono verificare le prestazioni di un controllo in feedforward per rispettare le seguenti specifiche:
+
+		\begin{align*}
+			t_s &\le 0.0.15 \singleSpacing [s] \trippleSpacing \textnormal{rispetto a $\pm 5 \%$ del valore a regime} \\
+			S &\le 10  \% \\
+			r &= 10,50,120 \singleSpacing [gradi] \\
+		\end{align*}	
 		
 		
 		

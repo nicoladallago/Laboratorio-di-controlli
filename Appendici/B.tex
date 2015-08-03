@@ -15,3 +15,50 @@
 			\begin{center}
 				\includestandalone[width=1\textwidth]{./simulazioni/4_d__0_5_raw} 
 			\end{center}
+			
+			\begin{table}[H]
+				\centering
+				\begin{tabular}{cccc}
+					\toprule
+					\textbf{$d \singleSpacing [Volt]$} & \textbf{$r \singleSpacing [gradi]$} & \textbf{$t_s \singleSpacing [s]$} & \textbf{$S \singleSpacing [\%]$}\\
+					\midrule
+					$0.5$   & $10$  & $0.458$ & $7.9$    \\
+					$0.5$   & $50$  & $0.81$  & $21.2$   \\
+					$0.5$   & $120$ & $0.834$ & $43.8$   \\
+					$-0.5$  & $10$  & $0.382$ & $2.6$    \\
+					$-0.5$  & $50$  & $0.671$ & $7.8$    \\ 	
+					$-0.5$  & $120$ & $0.844$ & $28.1$   \\ 
+					\bottomrule
+				\end{tabular}
+				\caption{Prestazioni controllore PID in simulazione prima della ritaratura}
+				\label{tab:PIDsim}
+			\end{table}		
+		
+		\newpage	
+		\paragraph{Simulazioni dopo la ritaratura}		
+		
+			\begin{center}
+				\includestandalone[width=1\textwidth]{./simulazioni/4_d_0_5_tuned_no_mag} 
+			\end{center}	
+			
+			\begin{center}
+				\includestandalone[width=1\textwidth]{./simulazioni/4_d__0_5_tuned_no_mag} 
+			\end{center}		
+		
+			\begin{table}[H]
+				\centering
+				\begin{tabular}{cccc}
+					\toprule
+					\textbf{$d \singleSpacing [Volt]$} & \textbf{$r \singleSpacing [gradi]$} & \textbf{$t_s \singleSpacing [s]$} & \textbf{$S \singleSpacing [\%]$}\\
+					\midrule
+					$0.5$   & $10$  & $0.041$ & $1.85$  \\
+					$0.5$   & $50$  & $0.094$ & $5.42$  \\
+					$0.5$   & $120$ & $0.103$ & $13.44$ \\
+					$-0.5$  & $10$  & $0.235$ & $0$     \\
+					$-0.5$  & $50$  & $0.115$ & $3.05$  \\ 	
+					$-0.5$  & $120$ & $0.11$  & $11.2$  \\ 
+					\bottomrule
+				\end{tabular}
+				\caption{Prestazioni controllore PID in simulazione dopo la ritaratura}
+				\label{tab:PIDsimRit}
+			\end{table}			

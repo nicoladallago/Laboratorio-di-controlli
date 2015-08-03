@@ -3,15 +3,25 @@ clc; clear all; close all;
 
 %% specifiche progetto
 t_s_max = 0.3;                 % [s] rispetto a +-1%r
-S = 5;                         % percento
+S = 5;                         % gradi
+r = 120;                        % ampiezza segnale di riferimento 
+d = 0.5;                       % ampiezza disturbo in ingresso
 
 %% funzione di trasferimento del motoriduttore
 P = tf(375, [1 40 0]);         % processo P 
 [numP, denP] = tfdata(P, 'v'); % estrae numeratore e denominatore
 
 %% calcolo parametri PID con desaturatore
-xi = 0.7;                      % da figura 9 con S=5%
-m_phi_G = 65;                  % da figura 9 con S=5%
+if r == 10   
+    xi = 0.22;                 % da figura 9 S=50% 
+    m_phi_G = 24;              % da figura 9 S=50%
+elseif r == 50
+    xi = 0.59;                 % da figura 9 S=10%
+    m_phi_G = 58.5;            % da figura 9 S=10%
+elseif r == 120
+    xi = 0.7;                  % da figura 9 S=4.17% 
+    m_phi_G = 66;              % da figura 9 S=4.17%
+end
 
 alpha = 0.1;                   % alpha appartiene a [1/3 , 1/10]
 b = 4;                         % b appartiene a [4, inf)
@@ -33,9 +43,9 @@ t_r = 1.8 / w_a_min;
 K_a = (1 / 3) * (t_r / K_i);   % guadagno desaturatore   
 
 %% ritaratura parametri PID
-%K_p = K_p * 9
-%K_i = K_i * 10
-%K_d = K_d * 4.5
+%K_p = K_p * 9;
+%K_i = K_i * 10;
+%K_d = K_d * 4.5;
 
 %% simulazione
 step_time_input = 1;           % [s] step time dell'ingresso a gradino
@@ -43,8 +53,6 @@ simulation_time = 5;           % [s] tempo di simulazione
 K_g2v = 0.0284;                % costante di conversione da gradi a volt
 K_r2v = 1.63;                  % costante di conversione da gradi a volt 
                                % all'uscita del motore
-r = 10;                        % ampiezza segnale di riferimento 
-d = 0.5;                       % ampiezza disturbo in ingresso
 
 sim('modello_motore_PID_desaturatore'); % simulazione SIMULINK
 
@@ -63,7 +71,7 @@ for i = 1 : 1 : numero_campioni
         break;
     end
 end
-tr = (t90 - t10) * 0.001
+tr = (t90 - t10) * 0.001;
 
 % massima sovraelongazione
 S = 100 * ((max(angolo_motore_PID(:)) - r) / r);
@@ -72,9 +80,9 @@ S = r * (S / 100)
 % tempo di assestamento
 ts = -1;
 for i = 1 : 1 : numero_campioni
-    if ((angolo_motore_PID(i) >= (r + 1)) || ...
-            (angolo_motore_PID(i) <= (r - 1)))  
-        ts = i;
+    if ((angolo_motore_PID(i) >= r * (101 / 100)) || ...
+            (angolo_motore_PID(i) <= r * (99 / 100)))  
+        ts = i - 1;
     end
 end
-ts = ts * 0.001 - step_time_input;
+ts = ts * 0.001 - step_time_input

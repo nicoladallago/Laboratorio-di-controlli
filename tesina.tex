@@ -51,30 +51,30 @@
 
 
 %%%%%%%%%%%%%% MATLAB code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{listings} % inserisce listati di programmi
+\usepackage{listings} 							% inserisce listati di programmi
 \definecolor{commenti}{rgb}{0.13,0.55,0.13}
 \definecolor{stringhe}{rgb}{0.63,0.125,0.94}
 \lstloadlanguages{Matlab}
-\lstset{% general command to set parameter(s)
+\lstset{										% general command to set parameter(s)
 framexleftmargin=0mm,
 frame=single,
-keywordstyle = \color{blue},% blue keywords
-identifierstyle =, % nothing happens
-commentstyle = \color{commenti}, % comments
-stringstyle = \ttfamily \color{stringhe}, % typewriter type for strings
-showstringspaces = false, % no special string spaces
+keywordstyle = \color{blue},					% blue keywords
+identifierstyle =, 								% nothing happens
+commentstyle = \color{commenti}, 				% comments
+stringstyle = \ttfamily \color{stringhe}, 		% typewriter type for strings
+showstringspaces = false, 						% no special string spaces
 emph = {for, if, then, else, end},
 emphstyle = \color{blue},
-firstnumber = 1, % numero della prima linea
-numbers =left, %  show number_line
-numberstyle = \tiny, % style of number_line
-stepnumber = 1, % one number_line after stepnumber
+firstnumber = 1, 								% numero della prima linea
+numbers =left, 									% show number_line
+numberstyle = \tiny, 							% style of number_line
+stepnumber = 1, 								% one number_line after stepnumber
 numbersep = 5pt,
-language = {Matlab}, % per riconoscere la sintassi matlab
-extendedchars = true, % per abilitare caratteri particolari
-breaklines = true, % per mandare a capo le righe troppo lunghe
-breakautoindent = true, % indenta le righe spezzate
-breakindent = 30pt, % indenta le righe di 30pt
+language = {Matlab}, 							% per riconoscere la sintassi matlab
+extendedchars = true, 							% per abilitare caratteri particolari
+breaklines = true, 								% per mandare a capo le righe troppo lunghe
+breakautoindent = true, 						% indenta le righe spezzate
+breakindent = 30pt, 							% indenta le righe di 30pt
 }
 
 \DeclareMathOperator*{\rank}{rank}
@@ -84,29 +84,25 @@ breakindent = 30pt, % indenta le righe di 30pt
 \newcommand{\trippleSpacing}{\phantom{aaa}}	% spazio di tre caratteri
 \newcommand{\singleSpacing}{\phantom{a}}	% spazio di un carattere
 		
-\tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=2em]
-\tikzstyle{sum} = [circle, minimum width=12pt, draw, inner sep=0pt, path picture={\draw (path picture bounding box.south east) -- (path picture bounding box.north west) (path picture bounding box.south west) -- (path picture bounding box.north east);}]
+\tikzstyle{block} = [draw, 
+				 	 rectangle, 
+					 minimum height = 3em, 
+					 minimum width = 2em]
+\tikzstyle{sum} = [circle, 
+				   minimum width = 12pt, 
+				   draw, 
+				   inner sep = 0pt, 
+				   path picture={\draw (path picture bounding box.south east) -- (path picture bounding box.north west) (path picture bounding box.south west) -- (path picture bounding box.north east);}]
 \tikzstyle{input} = [coordinate]
 \tikzstyle{output} = [coordinate]
-\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
-
+\tikzstyle{pinstyle} = [pin edge = {to-, thin, black}]
 \tikzstyle{my right of} = [right of=#1.east]
-
-
-
 \hyphenation{italian}
 \lhead{Laboratorio di Controlli}
 \rhead{Esperienza 1}
 
 \makeatother
-
 \usepackage{babel}
-
-
-
-
-
-
 
 
 \begin{document}
@@ -166,11 +162,4 @@ breakindent = 30pt, % indenta le righe di 30pt
 \include{./Appendici/D}	
 		
 		
-		
-
-		
-					
-
 \end{document}
-
-	
