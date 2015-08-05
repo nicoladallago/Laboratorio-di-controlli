@@ -22,12 +22,12 @@
 					\toprule
 					\textbf{$d \singleSpacing [Volt]$} & \textbf{$r \singleSpacing [gradi]$} & \textbf{$t_s \singleSpacing [s]$} & \textbf{$S \singleSpacing [\%]$}\\
 					\midrule
-					$0.5$   & $10$  & $0.458$ & $7.9$    \\
-					$0.5$   & $50$  & $0.81$  & $21.2$   \\
-					$0.5$   & $120$ & $0.834$ & $43.8$   \\
-					$-0.5$  & $10$  & $0.382$ & $2.6$    \\
-					$-0.5$  & $50$  & $0.671$ & $7.8$    \\ 	
-					$-0.5$  & $120$ & $0.844$ & $28.1$   \\ 
+					$0.5$   & $10$  & $0.778$ & $6.7$    \\
+					$0.5$   & $50$  & $0.803$ & $7.5$    \\
+					$0.5$   & $120$ & $0.821$ & $15.1$   \\
+					$-0.5$  & $10$  & $0.909$ & $1$      \\
+					$-0.5$  & $50$  & $0.833$ & $5.2$    \\ 	
+					$-0.5$  & $120$ & $0.836$ & $13.4$   \\ 
 					\bottomrule
 				\end{tabular}
 				\caption{Prestazioni controllore PID in simulazione prima della ritaratura}
@@ -38,11 +38,11 @@
 		\paragraph{Simulazioni dopo la ritaratura}		
 		
 			\begin{center}
-				\includestandalone[width=1\textwidth]{./simulazioni/4_d_0_5_tuned_no_mag} 
+				\includestandalone[width=1\textwidth]{./simulazioni/4_d_0_5_tuned} 
 			\end{center}	
 			
 			\begin{center}
-				\includestandalone[width=1\textwidth]{./simulazioni/4_d__0_5_tuned_no_mag} 
+				\includestandalone[width=1\textwidth]{./simulazioni/4_d__0_5_tuned} 
 			\end{center}		
 		
 			\begin{table}[H]
@@ -51,14 +51,50 @@
 					\toprule
 					\textbf{$d \singleSpacing [Volt]$} & \textbf{$r \singleSpacing [gradi]$} & \textbf{$t_s \singleSpacing [s]$} & \textbf{$S \singleSpacing [\%]$}\\
 					\midrule
-					$0.5$   & $10$  & $0.041$ & $1.85$  \\
-					$0.5$   & $50$  & $0.094$ & $5.42$  \\
-					$0.5$   & $120$ & $0.103$ & $13.44$ \\
-					$-0.5$  & $10$  & $0.235$ & $0$     \\
-					$-0.5$  & $50$  & $0.115$ & $3.05$  \\ 	
-					$-0.5$  & $120$ & $0.11$  & $11.2$  \\ 
+					$0.5$   & $10$  & $0.29$  & $0.4$  \\
+					$0.5$   & $50$  & $0.188$ & $0$    \\
+					$0.5$   & $120$ & $0.276$ & $0$    \\
+					$-0.5$  & $10$  & $0.248$ & $0$    \\
+					$-0.5$  & $50$  & $0.231$ & $0$    \\ 	
+					$-0.5$  & $120$ & $0.296$ & $0$    \\ 
 					\bottomrule
 				\end{tabular}
 				\caption{Prestazioni controllore PID in simulazione dopo la ritaratura}
 				\label{tab:PIDsimRit}
 			\end{table}			
+			
+			
+	\subsection{Simulazioni controllo in feedforward}
+	\label{subapp:FFsimulazione}	
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/5_d_0_2} 
+			\caption{Ingressi di controllo e uscite del motore con controllore feedforward e rumore additivo $d=0.2$ dopo la taratura.}		
+		\end{figure}		
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/5_d__0_2} 
+			\caption{Ingressi di controllo e uscite del motore con controllore feedforward e rumore additivo $d=-0.2$ dopo la taratura.}		
+		\end{figure}	
+		
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{cccc}
+				\toprule
+				\textbf{$d \singleSpacing [Volt]$} & \textbf{$r \singleSpacing [gradi]$} & \textbf{$t_s \singleSpacing [s]$} & \textbf{$S \singleSpacing [\%]$}\\
+				\midrule
+				$0.2$   & $10$  & $0.157$ & $10$    \\
+				$0.2$   & $50$  & $0.157$ & $10$    \\
+				$0.2$   & $120$ & $0.16$  & $9.7$   \\
+				$-0.2$  & $10$  & $0.157$ & $10$    \\
+				$-0.2$  & $50$  & $0.157$ & $10$    \\ 	
+				$-0.2$  & $120$ & $0.161$ & $9.5$   \\ 
+				$d=0 \singleSpacing a=1.1a_{nom}$ & $50$ & $0.15$  & $6.7$ \\
+				$d=0 \singleSpacing a=1.2a_{nom}$ & $50$ & $0.088$ & $4.1$ \\
+				\bottomrule
+			\end{tabular}
+			\caption{Prestazioni controllore feedforward in simulazione dopo la ritaratura}
+			\label{tab:FFsim}
+		\end{table}
