@@ -309,23 +309,84 @@
 	\subsection{Verifica sperimentale in laboratorio}
 	\label{subsec:LAB}
 		
-		Si passa alla verifica in laboratorio di quanto fatto fin'ora, in particolare si valuteranno le differenze fra quanto simulato e il dato reale per ciascun sistema di controllo ma soprattutto si  valuterà quale controllore è migliore rispetto agli altri. Per prima cosa si è provveduto a una ritaratura manuale del PID, infatti questo tipo di controllore è piuttosto sensibile agli errori di modello rispetto, per esempio, al controllo  integrale.
+		Si passa alla verifica in laboratorio di quanto fatto fin'ora, in particolare si valuteranno le differenze fra quanto simulato e il dato reale per ciascun sistema di controllo ma soprattutto si  valuterà quale controllore è migliore rispetto agli altri. Per prima cosa si è provveduto a una ritaratura manuale del PID, infatti questo tipo di controllore è piuttosto sensibile agli errori di modello, ma comunque non si è dovuto lavorare molto per la ritaratura, è bastato alzare leggermente il guadagno integrale per rendere il sistema più veloce. Stessa cosa anche per il controllo in feedforward, si è effettuata una prima prova con il valore teorico e misurato l'uscita e per la ritaratura si è semplicemente moltiplicato il valore di $N$ per il rapporto tra $r$ e l'$r$ misurato.
+		
+		\begin{equation}
+			N_{ritarato} = N \cdot \frac{r}{r_{misurato}}
+		\end{equation}
+		
+		\noindent Questo semplice ma efficace sistema ha reso la taratura molto facile e l'errore a regime misurato si è dimostrato essere inferiore all'un per mille. Inoltre si è appurato come si è dovuto modificare il valore di meno di un centesimo rispetto a quello originale, dimostrando che l'errore di modello e/o l'errore sistematico degli strumenti di misura sono bassi. Per quanto riguarda il controllo integrale non si è effettuata nessuna ritaratura della posizione dei poli, ma si è tenuta la configurazione (D). Detto questo si procede allora al confronto dei diversi controllori, le uscite del motore sono riportate in figura \ref{fig:outLAB} mentre in figura \ref{fig:prestazioniLAB} sono riportati due semplici diagrammi che mostrano quale sia effettivamente il miglior controllo. 
 		
 		
-		\begin{center}
-			\begin{tikzpicture}
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[scale=1.07]
 				\begin{axis}[
-				xbar, xmin=0,
-				width=12cm, height=3.5cm, enlarge y limits=0.5,
-				xlabel={contronto tempo di assestamento (meno è mehlio)},
-				symbolic y coords={no,yes},
-				ytick=data,
-				nodes near coords, nodes near coords align={horizontal},
-				]
-					\addplot coordinates {(3,no) (7,yes)};
+				    xbar,
+				    enlarge y limits=0.25,
+				    enlarge x limits=0,
+				    xmin=0, xmax=11,
+				    title={Sovraelongazioni in \%},
+				    width=8cm, height=5.9cm,
+				    legend style={at={(0.5,-0.15)}, anchor=north,legend columns=-1},
+				    %ylabel={\#participants},
+				    symbolic y coords={$r=120$,$r=50$,$r=10$},
+				    ytick=data,
+				    nodes near coords,
+				    nodes near coords align={horizontal},
+				    reverse legend,
+				    ]
+					\addplot[green] coordinates {(9.6,$r=120$) (6.8,$r=50$) (9,$r=10$)};
+					\addplot[red] coordinates {(0,$r=120$) (0,$r=50$) (1.8,$r=10$)};
+					\addplot[blue] coordinates {(0.6,$r=120$) (1.7,$r=50$) (4.8,$r=10$)};
+					\legend{integrale \singleSpacing,feedforward \singleSpacing,PID \singleSpacing}
 				\end{axis}
-			\end{tikzpicture} 
-		\end{center}
+			\end{tikzpicture}
+			\begin{tikzpicture}[scale=1.07]
+				\begin{axis}[
+				    xbar,
+				    enlarge y limits=0.25,
+				    enlarge x limits=0,
+				    xmin=0, xmax=0.24,
+				    title={Tempi di assestamento in secondi},
+				    width=8cm, height=5.9cm,
+				    legend style={at={(0.5,-0.15)}, anchor=north,legend columns=-1},
+				    %ylabel={\#participants},
+				    symbolic y coords={$r=120$,$r=50$,$r=10$},
+				    ytick={},
+				    yticklabels={},
+				    ytick=data,
+				    nodes near coords,
+				    nodes near coords align={horizontal},
+				    reverse legend,
+				    ]
+					\addplot[green] coordinates{(0.168,$r=120$) (0.171,$r=50$) (0.168,$r=10$)};
+					\addplot[red] coordinates {(0.096,$r=120$) (0.092,$r=50$) (0.108,$r=10$)};
+					\addplot[blue] coordinates {(0.209,$r=120$) (0.168,$r=50$) (0.176,$r=10$)};
+					\legend{integrale \singleSpacing,feedforward \singleSpacing,PID \singleSpacing}
+				\end{axis}
+			\end{tikzpicture}		
+			\caption{Confronto prestazioni mediante l'uso dei tre diversi controllori.}
+			\label{fig:prestazioniLAB}	
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/LAB_all_out} 
+			\caption{Uscite del motore con i tre diversi controllori.}
+			\label{fig:outLAB}		
+		\end{figure}		
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/LAB_all_in} 
+			\caption{Ingressi di controllo con i tre diversi controllori.}
+			\label{fig:inLAB}		
+		\end{figure}		
+		
+		\noindent Come si vede il miglior controllo è sempre quello in feedforward ritarato, sia per quanto riguarda il tempo di assestamento sia per quanto riguarda la massima sovraelongazione. Per assurdo è stato anche il controllore più semplice da realizzare, infatti bastano dei semplici comandi \textit{MATLAB} per il posizionamento automatico dei poli e il guadagno di feedforward è stato molto semplice da ritarare. Il controllore PID invece è anch'esso molto semplice ma ha richiesto del tempo per la sua ritaratura, cosa che può diventare anche piuttosto lunga se l'operatore non è abbastanza allenato nel fare questo. Dal controllo integrale invece si ottengono scarse prestazioni, comparabili al PID come tempo di assestamento ma nettamente peggiori come massima sovraelongazione. Ci si aspettava comunque che il controllo integrale fosse lento per la sua natura, infatti una possibile soluzione è quella di utilizzare in accoppiata il feedforward e l'integrale per compensare gli errori di entrambi, ma questo non è stato fatto in questa esperienza. Una curiosità che si nota in figura \ref{fig:outLAB} è che prima che il riferimento cambi di stato da $0$ a $r$ è che l'uscita rimane poco sopra allo zero, questo è un effetto dell'attrito di stacco, completamente trascurato in fase di modellizzazione. Altra cosa è che gli ingressi del PID sono molto più stabili rispetto a quanto ottenuto in simulazione, pur rimanendo comunque più oscillanti rispetto al feedforward e l'integrale. \newline
+		
+		\noindent In conclusione questa esperienza di laboratorio fornisce diversi spunti di riflessione. Innanzitutto, fin da subito è stato evidente come un controllore progettato per rispettare le specifiche in simulazione non necessariamente farà altrettanto una volta provato sul processo reale. Ciò può essere dovuto ad eccessive semplificazioni nella fase di modellizzazione del processo, a dati nominali non fedeli alla realtà osemplicemente a disturbi impossibili da eliminare nei processi veri. Ciò però non significa che la progettazione su modello di un controllore sia completamente inutile. Infatti si è notato come nella maggior parte dei casi l’andamento di ingressi e uscite previste avesse un andamento molto simile a quello effettivamente misurato in laboratorio. Tuttavia una fase di ritaratura dei parametri si è resa necessaria per riuscire a rispettare le specifiche imposte e ciò accade spesso nella pratica. In sostanza, quindi, la fase di modellizzazione è necessaria per poter capire quale sarà approssimativamente il comportamento del nostro sistema in catena chiusa e decidere quale sia il miglior controllo da attuare. Ma è anche vero che non ha solitamente senso effettuare una troppo scrupolosa taratura dei parametri di controllo sul modello perché spesso il sistema fisico si comporterà diversamente da quanto previsto.  
 		
 		
 		

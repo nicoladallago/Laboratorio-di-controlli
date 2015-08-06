@@ -1,7 +1,3 @@
-%% pulisci workspace
-clc; clear all; close all;
-
-
 %% misc
 simulation_time= 10;    % tempo di esecuzione della simulazione
 step_time_input = 1;    % step time dell'ingresso a gradino
@@ -11,7 +7,6 @@ ts = 0.15;              % ts < 0.15
 S = 10 / 100;           % S < 10%
 r = 120;                 % [gradi] - ampiezza gradino
 d = -0.2;                  % ampiezza disturbo sincronizzato al riferimento
-
 
 %% parametri motore (presi dalla tabella)
 % L = 0 per ipotesi
@@ -59,33 +54,8 @@ w1 = - sigma + i * h;
 w2 = - sigma - i * h;
 w3 = - sigma;
 W = [w1 - sigma, w2 - sigma, w3 - 2*sigma]; % poli desiderati
-
 K = acker (Az, Bz, W);                % matrice di retroazione K
 Ki = K(1);                            % prima colonna -> guadagno Ki
 
 %% SIMULA
 sim('controllore_stato_integrale_new.slx');
-
-%% massima sovraelongazione
-S = 100 * ((max(angolo_motore(:)) - r) / r);
-if ( S < 0 )
-    fprintf('non esiste S\n');
-else
-    S = 100 * ((max(angolo_motore(:)) - r) / r)
-end
-
-%% tempo di assestamento
-numero_campioni = simulation_time* (1 / 0.001);
-ts = -1;
-for i = 1 : 1 : numero_campioni
-    if (angolo_motore(i) >= r + (0.05 * r)) || (angolo_motore(i) <= r - (0.05 * r))  
-        ts = i;
-    end
-end
-
-ts = ts * 0.001 - step_time_input;
-if (ts ==  (simulation_time- step_time_input) )
-    fprintf ('non si assesta\n');
-else
-    ts
-end

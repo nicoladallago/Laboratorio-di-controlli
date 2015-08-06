@@ -1,0 +1,86 @@
+\section{Generalizzazione controllo integrale, principio del modello interno}
+\label{sec:modelloInterno}
+
+	Il principio del modello interno si basa sulla conoscenza delle caratteristiche del segnale di riferimento $r$ e dei disturbi $d$. Così è in grado di fornire una condizione sufficiente per la reiezione di disturbi e/o l'inseguimento di segnali di riferimento a regime permanente. Si possono distinguere tre diversi casi frequenti:
+	
+	\begin{itemize}
+		\item $r(t)$  e $d(t)$ segnali costanti (ma non noti), ovvero con $\dot{r}(t)=\dot{d}(t)=0$. Con questo tipo di segnali, utilizzando la trasformata di Laplace e le sue proprietà si ottiene banalmente
+		\begin{align*}
+			& sR(s)=0 \\
+			& sD(s)=0
+		\end{align*}
+		a cui corrisponde un sistema dinamico con i poli situati in $s=0$.
+		
+		\item $r(t)$  e $d(t)$ segnali sinusoidali di frequenza $\omega_0$
+		\begin{align*}
+			r(t) &= A\sin(\omega_0t+\phi) \\
+			d(t) &= E\sin(\omega_0t+\tau) 
+		\end{align*}
+		con $A$, $E$, $\phi$ e $\tau$ non noti. Calcolando la derivata del secondo ordine e con qualche facile passaggio algebrico si ha
+		\begin{align*}
+			& \ddot{r}(t) + \omega_0^2r(t)=0 \\
+			& \ddot{d}(t) + \omega_0^2d(t)=0 
+		\end{align*}
+		e ancora usando la trasformata di Laplace 
+		\begin{align*}
+			& (s^2+\omega_0^2)R(s)=0 \\
+			& (s^2+\omega_0^2)D(s)=0 \\
+		\end{align*}
+		a cui corrispondono i poli del sistema dinamico $s^2+\omega_0^2=0$.
+		
+	\end{itemize}	
+	
+	\noindent É comunque possibile generalizzare il secondo punto avendo un sistema descritto in \ref{eq:sistema} con ($A$,$B$) raggiungibile
+	
+	\begin{equation}
+		\begin{cases}
+			\dot{x}(t)=Ax(t)+Bu(t)+Gd(t) \\
+			y(t)=Cx(t) \trippleSpacing \trippleSpacing, \singleSpacing D=0
+		\end{cases}
+		\label{eq:sistema}
+	\end{equation}
+	  
+	\noindent in 
+	
+	\begin{align*}
+		& r^{(m)}(t)+\alpha_{m-1}r^{(m-1)}(t)+\dots+\alpha_0r(t)=0 \\
+		& d^{(m)}(t)+\alpha_{m-1}d^{(m-1)}(t)+\dots+\alpha_0d(t)=0 
+	\end{align*}
+	
+	\noindent e definendo l'errore $e(t)=y(t)-r(t)$ si ottiene
+	
+	\begin{equation}
+		e^{(m)}(t)+\alpha_{m-1}e^{(m-1)}(t)+\dots+\alpha_0e(t)=C\underbrace{\Big(x^{(m)}(t)+\alpha_{m-1}x^{(m-1)}(t)+\dots+\alpha_0x(t)\Big)}_\text{$\xi(t) \in \mathbb{R}^n $}
+	\end{equation}
+	
+	\noindent Allora 
+	
+	\begin{align*}
+		\dot{\xi}(t) &= x^{(m+1)}(t)+\alpha_{m-1}x^{(m)}(t)+\dots+\alpha_0x^{(1)}=   Ax^{(m)}(t)+Bu^{(m)}(t)+Gd^{(m)}(t)+\dots+\alpha_0\Big(Ax(t)+Bu(t)+Gd(t)\Big) \\
+		&=A\Big(x^{(m)}(t)+\alpha_{m-1}x^{(m-1)}(t)+\dots+\alpha_0x(t)\Big)+B\underbrace{\Big(u^{(m)}(t)+\dots+\alpha_0u(t)\Big)}_\text{$u_{\xi}(t)$}=A\xi(t)+Bu_{\xi}(t)
+	\end{align*}
+	
+	\noindent Si definisce un nuovo stato $z=\begin{bmatrix}e \dots e^{(m-1)} | \xi\end{bmatrix}^T \in \mathbb{R}^{m+n}$ e un relativo modello di stato
+	
+	\begin{equation}
+		\begin{cases}
+			\dot{z}(t)=A_zz(t)+B_zu_{\xi}(t) \\
+			y(t)=C_zz(t)+D_zu_{\xi}(t)
+		\end{cases}
+	\end{equation}
+	
+	\noindent dove le matrici $A_z$ e $B_z$ sono
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

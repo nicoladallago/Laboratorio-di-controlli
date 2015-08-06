@@ -1,6 +1,3 @@
-%% pulisci workspace
-clc; clear all; close all;
-
 %% misc
 simulation_time = 5;      % tempo di esecuzione della simulazione
 step_time_input = 1;      % step time dell'ingresso a gradino
@@ -30,7 +27,6 @@ bEq = 0;
 Jeq = (Jm * N^2) + Jl;
 
 %% creo il modello del motore e lo retroaziono
-
 a = -(bEq*R + KphiEq^2) / (Jeq*R);
 b = KphiEq / (Jeq*R);
 c = Kr2v;
@@ -49,57 +45,10 @@ h = wn * sin(theta);     % parte immaginaria del polo
 w1 = - sigma + i * h;    % polo desiderato 1
 w2 = - sigma - i * h;    % polo desiderato 2
 W = [w1 , w2];           % poli desiderati 
-
 K = place ( A , B , W ); % matrice di retroazione
 
 %% calcolo termine feed-forward
 N = 1 / (- C * inv(A - B * K) * B);
 
-%% ritaratura N
-if r==10 && d==0.2
-    N = N * 10/16.314;
-elseif r==50 && d==0.2
-    N = N * 50 / 54.195;
-elseif r==120 && d==0.2
-    N = N * 120/123.9993;
-elseif r==10 && d==-0.2
-    N = N * 10/7.20965;
-elseif r==50 && d==-0.2
-    N = N * 50/46.4077;
-elseif r==120 && d==-0.2
-    N = N * 120/116.2506;
-end
-
 %% SIMULA
-A = [0, 1;
-     0, 1.2*a];
 sim('modello_motore_stato.slx');
-figure()
-plot(angolo_motore)
-
-%% calcolo tempo di salita
-numero_campioni = simulation_time * (1 / 0.001);
-
-%% massima sovraelongazione
-S = 100 * ((max(angolo_motore(:)) - r) / r);
-if ( S < 0 )
-    fprintf('non esiste S\n');
-else
-    S
-end
-
-%% tempo di assestamento
-ts = -1;
-for i = 1 : 1 : numero_campioni
-   
-    if (angolo_motore(i) >= r + (0.05 * r)) || (angolo_motore(i) <= r - (0.05 * r))  
-        ts = i-1;
-    end
-end
-
-ts = ts * 0.001 - step_time_input;
-if (ts ==  (simulation_time - step_time_input) )
-    fprintf ('non si assesta\n');
-else
-    ts
-end

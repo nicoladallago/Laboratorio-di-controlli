@@ -41,3 +41,28 @@ Codice/LAB/FF/dopo/in_r_10.dat
 Codice/LAB/FF/dopo/in_r_50.dat
 test/figure.tex
 test/figure.pdf
+Codice/LAB/FF/dopo/in_r_120.dat
+Codice/LAB/FF/prima/in_r_120.dat
+Codice/LAB/INT/in_r_120.dat
+Codice/LAB/INT/in_r_50.dat
+Codice/LAB/INT/out_r_10.dat
+Codice/LAB/INT/out_r_120.dat
+Codice/LAB/INT/out_r_50.dat
+Codice/LAB/PID/in_r_10.dat
+Codice/LAB/PID/in_r_120.dat
+Codice/LAB/FF/dopo/out_r_10.dat
+Codice/LAB/FF/dopo/out_r_120.dat
+Codice/LAB/FF/dopo/out_r_50.dat
+Codice/LAB/FF/prima/in_r_10.dat
+Codice/LAB/FF/prima/in_r_50.dat
+Codice/LAB/FF/prima/out_r_10.dat
+Codice/LAB/FF/prima/out_r_120.dat
+Codice/LAB/FF/prima/out_r_50.dat
+Codice/LAB/INT/in_r_10.dat
+Codice/LAB/PID/in_r_50.dat
+Codice/LAB/PID/out_r_10.dat
+Codice/LAB/PID/out_r_120.dat
+Codice/LAB/PID/out_r_50.dat
+codice vero/controllo_motore_stato.m
+codice vero/modello_motore.m
+codice vero/controllo_motore_stato_integrale.m
