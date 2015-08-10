@@ -50,14 +50,14 @@
 	\noindent e definendo l'errore $e(t)=y(t)-r(t)$ si ottiene
 	
 	\begin{equation}
-		e^{(m)}(t)+\alpha_{m-1}e^{(m-1)}(t)+\dots+\alpha_0e(t)=C\underbrace{\Big(x^{(m)}(t)+\alpha_{m-1}x^{(m-1)}(t)+\dots+\alpha_0x(t)\Big)}_\text{$\xi(t) \in \mathbb{R}^n $}
+		e^{(m)}(t)+\alpha_{m-1}e^{(m-1)}(t)+\dots+\alpha_0e(t)=C\underbrace{\Big(x^{(m)}(t)+\alpha_{m-1}x^{(m-1)}(t)+\dots+\alpha_0x(t)\Big)}_\text{$\coloneqq\xi(t) \in \mathbb{R}^n $}
 	\end{equation}
 	
 	\noindent Allora 
 	
 	\begin{align*}
 		\dot{\xi}(t) &= x^{(m+1)}(t)+\alpha_{m-1}x^{(m)}(t)+\dots+\alpha_0x^{(1)}=   Ax^{(m)}(t)+Bu^{(m)}(t)+Gd^{(m)}(t)+\dots+\alpha_0\Big(Ax(t)+Bu(t)+Gd(t)\Big) \\
-		&=A\Big(x^{(m)}(t)+\alpha_{m-1}x^{(m-1)}(t)+\dots+\alpha_0x(t)\Big)+B\underbrace{\Big(u^{(m)}(t)+\dots+\alpha_0u(t)\Big)}_\text{$u_{\xi}(t)$}=A\xi(t)+Bu_{\xi}(t)
+		&=A\Big(x^{(m)}(t)+\alpha_{m-1}x^{(m-1)}(t)+\dots+\alpha_0x(t)\Big)+B\underbrace{\Big(u^{(m)}(t)+\dots+\alpha_0u(t)\Big)}_\text{$\coloneqq u_{\xi}(t)$}=A\xi(t)+Bu_{\xi}(t)
 	\end{align*}
 	
 	\noindent Si definisce un nuovo stato $z=\begin{bmatrix}e \dots e^{(m-1)} | \xi\end{bmatrix}^T \in \mathbb{R}^{m+n}$ e un relativo modello di stato
@@ -71,12 +71,165 @@
 	
 	\noindent dove le matrici $A_z$ e $B_z$ sono
 	
+	\begin{equation}
+		A_z=
+		\left[
+		\begin{array}{ccccc|ccc}
+			0         & 1     & 0     & \dots  & 0             & 0      & \dots & 0      \\
+			0         & 0     & 1     & \dots  & 0             & 0      & \dots & 0      \\
+			\vdots    &       &       & \ddots &               & \vdots &       & \vdots \\
+			0         & \hdotsfor{2}  & 0      & 1             & 0      & \dots & 0      \\
+			\cline{1-8}
+			-\alpha_0 & \hdotsfor{3}           & -\alpha_{m-1} &        & C     &        \\
+			\cline{1-8}
+			          &       & 0     &        &               &        & A     &        \\
+		\end{array}
+		\right]
+		\trippleSpacing
+		B_z=
+		\left[
+		\begin{array}{c}
+			0      \\
+			\vdots \\
+			\vdots \\
+			0      \\
+			\cline{1-1}
+			B      \\
+		\end{array}
+		\right]	
+	\end{equation}
 	
+	\noindent É possibile dimostrare anche che la coppia $(A_z, B_z)$ è raggiungibile con il criterio PBH a patto che $(A, B)$ sia raggiungibile e gli zeri di $(s^m+\alpha_{m-1}s^{m-1}+\dots+\alpha_0)$ non siano zei di trasferimento di $(A,B,C)$ \footnote{Per una dimostrazione è possibile consultare le note delle lezioni di \textit{Laboratorio di controlli} \url{http://automatica.dei.unipd.it/tl_files/utenti/lucaschenato/Classes/Lab_Controlli/2014-2015/LC_Lezione12.pdf}}. Detto questo è possibile calcolare l'ingresso $u_{\xi}$ definito in precedenza come (per semplicità di notazione la dipendenza dal tempo è sottintesa)
 	
+	\begin{align*}
+		u_{\xi} &=
+		\left[
+		\begin{array}{ccc|c}
+			k_0 & \dots & k_{m-1} & k_{\xi}			
+		\end{array}
+		\right]	
+		\left[
+		\begin{array}{c}
+			e         \\
+			\vdots    \\
+			e^{(m-1)} \\
+			\cline{1-1}
+			\xi
+		\end{array}
+		\right]
+		=-k_0e-\dots-k_{m-1}e^{(m-1)}-k_{\xi}\xi=u^{(m)}+\alpha_{m-1}u^{(m-1)}+\dots+\alpha_0u \\
+		&= -k_0e-\dots-k_{m-1}e^{(m-1)}-k_{\xi}\Big(x^{(m)}+\alpha_{m-1}x^{(m-1)}+\dots+\alpha_0x\Big)=u^{(m)}+\alpha_0u \\
+		&= -k_0e-\dots-k_{m-1}e^{(m-1)}=\Big(u^{(m)}+k_{\xi}x^{(m)}\Big)+\alpha_{(m-1)}\Big(u^{(m-1)}+k_{\xi}x^{(m.1)}\Big)+\dots+\alpha\Big(\underbrace{u+k_{\xi}x}_\text{$\coloneqq\tilde{u}$}\Big) \\
+		&\iff \tilde{u}^{(m)}+\alpha_{(m-1)}\tilde{u}^{(m-1)}+\dots+\alpha_0\tilde{u}=-k_{m-1}e^{(m-1)}-\dots-k_0e
+	\end{align*} 
 	
+	\noindent e applicando la trasformata di Laplace
 	
+	\begin{align*}
+		&\iff s^m\tilde{U}(s)+\dots+\alpha_0\tilde{U}(s)=-k_{m-1}s^{m-1}E(s)-\dots-k_0E(s) \\
+		&\iff \tilde{U}(s)=-\frac{k_{m-1}s^{m-1}+\dots+k_0}{s^m+\alpha_{m-1}s^{m-1}+\dots+\alpha_0}E(s)\coloneqq-P_e(s)E(s)
+	\end{align*}
 	
+	\begin{equation}
+		\tilde{u}\coloneqq u+k_{\xi}x \iff u=\tilde{u}-K_{\xi}x
+	\end{equation}
 	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[auto, node distance=1.95cm,>=latex']
+			
+			\node [input, name=input] {};
+			\node [sum, right of=input] (sum1) {};
+			\node [block, right of=sum1] (Pe) {$P_e(s)$};
+			\node [sum, right of=Pe] (sum2) {};
+			\node [input, name=fittizio1, right of=sum2] {};
+			\node [block, right of=fittizio1] (stato) {$\begin{cases}\dot{x}=Ax+Bu+Gd \\ y=Cx\end{cases}$};
+			\node [output, name=dirama1, right of=stato, node distance=3cm] {};
+			\node [output, name=out, right of=dirama1, node distance=1.2cm] {};
+			\node [block, below of=stato] (K) {$K_{\xi}$};
+			\node [input, name=d, above of=stato, node distance=1.5cm] {};
+			\node [output, name=x, below of=stato, right of=K, yshift=3.7cm, xshift=-.5cm] {};
+			\node [input, name=fittizio2, below of=K, node distance=1cm] {};
+			
+			\draw [->] (input) -- node[pos=0.05] {$r(t)$} node[pos=0.95] {$-$} (sum1) {};
+			\draw [->] (sum1) -- node[pos=0.25] {$-e(t)$} (Pe) {};
+			\draw [->] (Pe) -- node[pos=0.35] {$\tilde{u}(t)$} node[pos=0.95] {$+$} (sum2) {};
+			\draw [-] (sum2) -- node[pos=0.25] {$u(t)$} (fittizio1) {};   
+			\draw [->] (fittizio1) -- (stato) {}; 
+			\draw [->] (d) -- node[pos=0.05] {$d(t)$} (stato) {}; 
+			\draw [-] (stato) -- (dirama1) {};
+			\draw [->] (dirama1) -- node[pos=0.95] {$y(t)$} (out) {}; 
+			\draw [->] (x) |- node[pos=0.05] {$x$} node[pos=0.8] {$x(t)$} (K);
+			\draw [->] (K) -| node[pos=0.95] {$-$} (sum2) {};
+			\draw [-] (dirama1) |- (fittizio2) {};
+			\draw [->] (fittizio2) -| node[pos=0.95] {$+$} (sum1) {};
+		\end{tikzpicture}
+		\caption{Schema a blocchi per il principio del modello interno.}
+		\label{fig:modelloInterno}	
+	\end{figure}
+	
+	\noindent In figura \ref{fig:modelloInterno} è  riportato lo schema a blocchi di un controllo integrale con il principio del modello interno; la cosa che più lo contraddistingue è il fatto che il disturbo viene applicato direttamente al modello lineare. Si considera ora la funzione di trasferimento dal segnale $r$  di riferimento all'uscita $y$ del sistema in catena chiusa:
+	
+	\begin{equation}
+		Y(s)=P_{ry}(s)R(s)
+	\end{equation}
+	
+	\noindent Nel caso di questa esperienza si vogliono inseguire segnali sinusoidali  del tipo
+	
+	\begin{equation}
+		r(t)=a\sin(\omega_0t), \trippleSpacing \omega_0=\frac{2\pi}{T_0}
+	\end{equation}
+	
+	\noindent dove $T_0$ è il periodo del segnale in ingresso e $a$ la sua ampiezza. Essendo l'ingresso sinusoidale si può scrivere 
+	
+	\begin{equation}
+		\ddot{r}(t)+\omega_0^2r(t)=0
+		\label{eq:differenziale}
+	\end{equation} 
+	
+	\noindent e l'uscita a regime risulta quindi
+	
+	\begin{equation}
+		y(t)=a|P_{ry}(\jmath\omega_0)|\sin(\omega_0t+\angle P_{ry}(\jmath\omega_0))
+	\end{equation}
+	
+	\noindent Dall'equazione \ref{eq:differenziale} si possono ricavare i valori degli $\alpha_i$ che risultano essere $\alpha_1=0$ e $\alpha_0=\omega_0^2$ e rimane solo da calcolare i parametri $k_i$ per la retroazione. A tal proposito si è scelto di posizionare i poli in catena chiusa come in figura \ref{fig:PoliModelloInterno}
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[scale=1.6]
+			\draw [-latex] (0,2) -- (4,2);
+			\draw [-latex] (3,0) -- (3,4);
+			\draw [<->] (1,1.9) -- (3,1.9);
+			\draw [dashed] (3,4) arc (90:270:2);
+			\draw (3,2) -- (1.586, 3.414);
+			\draw (3,2) -- (1.286, 3);
+			\draw [-latex] (3,3.5) arc (90:135:1.5);
+			\draw [-latex] (3,3.2) arc (90:150:1.2);
+			\draw [dashed] (1.586,3.414) -- (1.586,0.586);
+			\draw [dashed] (1.268,3) -- (1.286,1);
+				
+			\node [align=center] at (3.9, 2.2) {$\Re$};
+			\node [align=center] at (3.2, 3.9) {$\Im$};	
+			\node [align=center] at (2, 1.7) {$\omega_n$};
+			\node [align=center] at (2.5, 3.6) {$45°$};
+			\node [align=center] at (2.6, 2.85) {$60°$};
+
+			\node [align=center, red] at (1.586,3.414) {\Large $\times$};
+			\node [align=center, red] at (1.268,3) {\Large $\times$};
+			\node [align=center, red] at (1.586,0.586) {\Large $\times$};
+			\node [align=center, red] at (1.286,1) {\Large $\times$};
+		\end{tikzpicture}
+		\caption{Posizione dei poli in catena chiusa per controllo integrale con principio del modello interno.}
+		\label{fig:PoliModelloInterno}
+	\end{figure}	
+	
+	\noindent con $\omega_n \approx 20$. 
+	
+	\subsection{Simulazione e confronto tra modello interno e controllo integrale}
+	\label{subsec:SimInterno}
+	
+	Oltre al principio del modello interno, si è voluto applicare anche il controllo integrale studiato in precedenza. Si confronteranno quindi le prestazioni fra i due controllori sia in simulazione con \textit{SIMULINK} sia in laboratorio con il motore. Si proveranno diversi periodi e ampiezze per il segnale di ingresso e come prestazioni si utilizzeranno l'errore di fase e l'errore di guadagno.
 	
 	
 	
