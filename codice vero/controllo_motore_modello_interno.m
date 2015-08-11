@@ -67,13 +67,24 @@ Bz = [ 0 ;
 wn = 20 ;
 
 w1 = -  wn * cos(pi/4) + i * wn*sin(pi/4);
-w2 = - wn * cos(pi/6) + i * wn*sin(pi/6) ;
+w2 = - wn * cos(pi/6) + i * wn*sin(pi/6);
 w3 = - wn * cos(pi/6) - i * wn*sin(pi/6);
-w4 = -  wn * cos(pi/4) - i * wn*sin(pi/4) ;
+w4 = -  wn * cos(pi/4) - i * wn*sin(pi/4);
+
+figure()
+plot(w1, 'x')
+hold on
+plot(w2, 'x')
+hold on
+plot(w3, 'x')
+hold on
+plot(w4, 'x')
+
+
 W = [w1 , w2 , w3 , w4]; %poli desiderati per garantire sovraelongazione,t.assestamento5%
 
 %retroazione
-K = acker ( Az , Bz , W ); %matrice di retroazione affinche' Az-BzK abbia quei poli
+K = acker (Az , Bz , W); %matrice di retroazione affinche' Az-BzK abbia quei poli
 K3 = [K(3) , K(4)];
 
 

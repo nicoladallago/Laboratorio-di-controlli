@@ -66,3 +66,7 @@ Codice/LAB/PID/out_r_50.dat
 codice vero/controllo_motore_stato.m
 codice vero/modello_motore.m
 codice vero/controllo_motore_stato_integrale.m
+codice vero/bode_amplitude.dat
+codice vero/bode_phase.dat
+test/bode/integrale/bode_amplitude.dat
+test/bode/interno/bode_amplitude.dat

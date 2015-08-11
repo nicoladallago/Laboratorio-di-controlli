@@ -152,7 +152,7 @@
 			\node [input, name=fittizio2, below of=K, node distance=1cm] {};
 			
 			\draw [->] (input) -- node[pos=0.05] {$r(t)$} node[pos=0.95] {$-$} (sum1) {};
-			\draw [->] (sum1) -- node[pos=0.25] {$-e(t)$} (Pe) {};
+			\draw [->] (sum1) -- node[pos=0.25] {$e(t)$} (Pe) {};
 			\draw [->] (Pe) -- node[pos=0.35] {$\tilde{u}(t)$} node[pos=0.95] {$+$} (sum2) {};
 			\draw [-] (sum2) -- node[pos=0.25] {$u(t)$} (fittizio1) {};   
 			\draw [->] (fittizio1) -- (stato) {}; 
