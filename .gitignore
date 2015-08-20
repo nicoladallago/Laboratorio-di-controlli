@@ -70,3 +70,4 @@ codice vero/bode_amplitude.dat
 codice vero/bode_phase.dat
 test/bode/integrale/bode_amplitude.dat
 test/bode/interno/bode_amplitude.dat
+*.ini

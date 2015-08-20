@@ -1,36 +1,37 @@
 \section{Generalizzazione controllo integrale, principio del modello interno}
 \label{sec:modelloInterno}
 
-	Il principio del modello interno si basa sulla conoscenza delle caratteristiche del segnale di riferimento $r$ e dei disturbi $d$. Così è in grado di fornire una condizione sufficiente per la reiezione di disturbi e/o l'inseguimento di segnali di riferimento a regime permanente. Si possono distinguere tre diversi casi frequenti:
+	Il principio del modello interno si basa sulla conoscenza delle caratteristiche del segnale di riferimento $r$ e dei disturbi $d$. Così è in grado di fornire una condizione sufficiente per la reiezione di disturbi e/o l'inseguimento di segnali di riferimento a regime permanente. 
+%	Si possono distinguere tre diversi casi frequenti:
+%	
+%	\begin{itemize}
+%		\item $r(t)$  e $d(t)$ segnali costanti (ma non noti), ovvero con $\dot{r}(t)=\dot{d}(t)=0$. Con questo tipo di segnali, utilizzando la trasformata di Laplace e le sue proprietà si ottiene banalmente
+%		\begin{align*}
+%			& sR(s)=0 \\
+%			& sD(s)=0
+%		\end{align*}
+%		a cui corrisponde un sistema dinamico con i poli situati in $s=0$.
+%		
+%		\item $r(t)$  e $d(t)$ segnali sinusoidali di frequenza $\omega_0$
+%		\begin{align*}
+%			r(t) &= A\sin(\omega_0t+\phi) \\
+%			d(t) &= E\sin(\omega_0t+\tau) 
+%		\end{align*}
+%		con $A$, $E$, $\phi$ e $\tau$ non noti. Calcolando la derivata del secondo ordine e con qualche facile passaggio algebrico si ha
+%		\begin{align*}
+%			& \ddot{r}(t) + \omega_0^2r(t)=0 \\
+%			& \ddot{d}(t) + \omega_0^2d(t)=0 
+%		\end{align*}
+%		e ancora usando la trasformata di Laplace 
+%		\begin{align*}
+%			& (s^2+\omega_0^2)R(s)=0 \\
+%			& (s^2+\omega_0^2)D(s)=0 \\
+%		\end{align*}
+%		a cui corrispondono i poli del sistema dinamico $s^2+\omega_0^2=0$.
+%		
+%	\end{itemize}	
 	
-	\begin{itemize}
-		\item $r(t)$  e $d(t)$ segnali costanti (ma non noti), ovvero con $\dot{r}(t)=\dot{d}(t)=0$. Con questo tipo di segnali, utilizzando la trasformata di Laplace e le sue proprietà si ottiene banalmente
-		\begin{align*}
-			& sR(s)=0 \\
-			& sD(s)=0
-		\end{align*}
-		a cui corrisponde un sistema dinamico con i poli situati in $s=0$.
-		
-		\item $r(t)$  e $d(t)$ segnali sinusoidali di frequenza $\omega_0$
-		\begin{align*}
-			r(t) &= A\sin(\omega_0t+\phi) \\
-			d(t) &= E\sin(\omega_0t+\tau) 
-		\end{align*}
-		con $A$, $E$, $\phi$ e $\tau$ non noti. Calcolando la derivata del secondo ordine e con qualche facile passaggio algebrico si ha
-		\begin{align*}
-			& \ddot{r}(t) + \omega_0^2r(t)=0 \\
-			& \ddot{d}(t) + \omega_0^2d(t)=0 
-		\end{align*}
-		e ancora usando la trasformata di Laplace 
-		\begin{align*}
-			& (s^2+\omega_0^2)R(s)=0 \\
-			& (s^2+\omega_0^2)D(s)=0 \\
-		\end{align*}
-		a cui corrispondono i poli del sistema dinamico $s^2+\omega_0^2=0$.
-		
-	\end{itemize}	
-	
-	\noindent É comunque possibile generalizzare il secondo punto avendo un sistema descritto in \ref{eq:sistema} con ($A$,$B$) raggiungibile
+	\noindent É possibile generalizzare il principio avendo un sistema descritto in \ref{eq:sistema} con ($A$,$B$) raggiungibile
 	
 	\begin{equation}
 		\begin{cases}
@@ -187,17 +188,11 @@
 		\label{eq:differenziale}
 	\end{equation} 
 	
-	\noindent e l'uscita a regime risulta quindi
-	
-	\begin{equation}
-		y(t)=a|P_{ry}(\jmath\omega_0)|\sin(\omega_0t+\angle P_{ry}(\jmath\omega_0))
-	\end{equation}
-	
-	\noindent Dall'equazione \ref{eq:differenziale} si possono ricavare i valori degli $\alpha_i$ che risultano essere $\alpha_1=0$ e $\alpha_0=\omega_0^2$ e rimane solo da calcolare i parametri $k_i$ per la retroazione. A tal proposito si è scelto di posizionare i poli in catena chiusa come in figura \ref{fig:PoliModelloInterno}
+	\noindent e l'uscita a regime risulta quindi $y(t)=a|P_{ry}(\jmath\omega_0)|\sin(\omega_0t+\angle P_{ry}(\jmath\omega_0))$. Dall'equazione \ref{eq:differenziale} si possono ricavare i valori degli $\alpha_i$ che risultano essere $\alpha_1=0$ e $\alpha_0=\omega_0^2$ e rimane solo da calcolare i parametri $k_i$ per la retroazione. A tal proposito si è scelto di posizionare i poli in catena chiusa come in figura \ref{fig:PoliModelloInterno} con $\omega_n \approx 20$. 
 	
 	\begin{figure}[H]
 		\centering
-		\begin{tikzpicture}[scale=1.6]
+		\begin{tikzpicture}[scale=0.7]
 			\draw [-latex] (0,2) -- (4,2);
 			\draw [-latex] (3,0) -- (3,4);
 			\draw [<->] (1,1.9) -- (3,1.9);
@@ -224,16 +219,112 @@
 		\label{fig:PoliModelloInterno}
 	\end{figure}	
 	
-	\noindent con $\omega_n \approx 20$. 
 	
 	\subsection{Simulazione e confronto tra modello interno e controllo integrale}
 	\label{subsec:SimInterno}
 	
-	Oltre al principio del modello interno, si è voluto applicare anche il controllo integrale studiato in precedenza. Si confronteranno quindi le prestazioni fra i due controllori sia in simulazione con \textit{SIMULINK} sia in laboratorio con il motore. Si proveranno diversi periodi e ampiezze per il segnale di ingresso e come prestazioni si utilizzeranno l'errore di fase e l'errore di guadagno.
+		Oltre al principio del modello interno, si è voluto applicare anche il controllo integrale studiato in precedenza. Si confronteranno quindi le prestazioni fra i due controllori sia in simulazione con \textit{SIMULINK} sia in laboratorio con il motore. Si proveranno diversi periodi e ampiezze per il segnale di ingresso e come prestazioni si utilizzeranno l'errore di fase e l'errore di guadagno. Le diverse ampiezze del segnale di riferimento sono $a=10°$, $a=20°$ e $a=50°$, mentre i diversi periodi sono $T_0=1$, $T_0=0.5$, $T_0=0.25$ e $T_0=0.15$ secondi. Come si vedrà a seguire, entrambi i sistemi si comportano abbastanza bene per quanto riguarda l'errore di guadagno, a parte qualche eccezioni nel caso più difficile con ampiezza più grande e periodo più piccolo, mentre vi sono grosse differenze per quanto riguarda l'errore di fase. Per questo motivo si è deciso allora di separare i risultati ragruppandoli per periodi uguali.
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/7_sim_lower_bound}
+			\caption{Uscite del motore per periodo $T_0=1$ secondi in simulazione (in linea tratteggiata il riferimento).} 
+			\label{fig:simLowerBound}		
+		\end{figure}		 
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/7_sim_upper_bound} 
+			\caption{Uscite del motore per periodo $T_0=0.15$ secondi in simulazione (in linea tratteggiata il riferimento).}
+			\label{fig:simUpperBound}		
+		\end{figure}
+		
+		\noindent Come si vede dalla figura \ref{fig:simLowerBound}, per periodi del senale molto alti, entrambi i sistemi dopo circa un periodo inseguono il riferimento piuttosto bene, fatta eccezione per il controllo integrale che introduce un lieve errore di fase. I problemi  sorgono quando si incrementa la frequenza come in figura \ref{fig:simUpperBound}, il controllo integrale mostra i suoi limiti introducendo sia un grande errore di fase che di guadagno. Il principio del modello interno invece dopo un tempo di assestamento riesce ad inseguire il riferimento solo con un piccolo errore di guadagno trascurabile.	
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[scale=0.61]
+			\begin{axis}[
+				xscale=1.7,
+				yscale=1,
+				ylabel={$20\log_{10}P_{ry} \singleSpacing (dB)$},
+				y label style={at={(axis description cs:-0.12,.5)},anchor=south},
+				xlabel={$\omega \singleSpacing (rad/sec)$},
+				x label style={at={(axis description cs:.15,-.1)},anchor=south},
+				ytick={-100,-60,...,60},
+				yticklabels={$-100$, $-60$, $-20$, $20$, $60$},
+				xmode=log,			
+				xmin=10,
+				xmax=10000,
+				ymin=-120,
+				ymax=65,
+				grid=minor,
+				ymajorgrids,
+			  	legend style={at={(0.445, 0.98)}, anchor=north east},        
+			  	legend cell align=left,     
+				legend entries={modello interno, controllo integrale},			
+				]
+				
+			\addplot[red] table {./simulazioni/bode/modello_interno/bode_amplitude.dat};
+			\addplot[blue] table {./simulazioni/bode/controllo_integrale/bode_amplitude.dat};
+			\end{axis}
+			\end{tikzpicture}
+			\begin{tikzpicture}[scale=0.61]
+			\begin{axis}[
+				xscale=1.7,
+				yscale=1,
+				ylabel={$\angle P_{ry} \singleSpacing (°)$},
+				y label style={at={(axis description cs:-0.13,.5)},anchor=south},
+				xlabel={$\omega \singleSpacing (rad/sec)$},
+				x label style={at={(axis description cs:.15,-.1)},anchor=south},
+				ytick={-360,-300,...,0},
+				xmode=log,			
+				xmin=10,
+				xmax=10000,
+				ymin=-370,
+				ymax=0,
+				grid=minor,
+				ymajorgrids,
+			  	legend style={at={(0.445, 0.98)}, anchor=north east},        
+			  	legend cell align=left,     
+				legend entries={modello interno, controllo integrale},			
+				]
+				
+			\addplot[red] table {./simulazioni/bode/modello_interno/bode_phase.dat};
+			\addplot[blue] table {./simulazioni/bode/controllo_integrale/bode_phase.dat};
+			\end{axis}
+			\end{tikzpicture}
+			\caption{Modulo e fase delle funzioni di trasferimento $P_{ry}$ per modello interno e controllo integrale}
+			\label{fig:bode7}
+		\end{figure}
+		
+		 \noindent In figura \ref{fig:bode7} si possono vedere modulo e fase delle funzioni di trasferimento dal riferimento all'uscita dei due tipi di controllo. In particolare si può osservare come il principio del modello interno offre un attenuazione e una fase praticamente nulle per pulsazioni fino circa $100 rad/sec$; ciò vuol dire che segnali fino quella particolare pulsazione potranno essere inseguiti piuttosto bene. Il controllo integrale offre invece queste prestazioni fino a pulsazioni molto minori, soprattutto per quanto riguarda la fase.		
+		
+		
+		
+		
+		
+		
+		
+	\subsection{Verifica sperimentale in laboratorio}	
+	\label{subsec:lab7}	
 	
+		Le stesse simulazioni sono state ripetute anche con la strumentazione di laboratorio.
 	
-	
-	
-	
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/7_lab_lower_bound}
+			\caption{Uscite del motore per periodo $T_0=1$ secondi in laboratorio (in linea tratteggiata il riferimento).} 
+			\label{fig:labLowerBound}		
+		\end{figure}		 
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=1\textwidth]{./simulazioni/7_lab_upper_bound} 
+			\caption{Uscite del motore per periodo $T_0=0.15$ secondi in laboratorio (in linea tratteggiata il riferimento).}
+			\label{fig:labUpperBound}		
+		\end{figure}
+		
+		\noindent In figura \ref{fig:labLowerBound} e \ref{fig:labUpperBound} sono riportati gli stessi grafici delle misure fatte in simulazione. Il sistema si comporta grosso modo come quello simulato, ciò che peggiora è l'errore di guadagno alle alte frequenze. Questo può essere dovuto ai limiti fisici dell'apparecchiatura, perché la dinamica del motore non è veloce come ci si aspetta dal modello, ma tutto sommato i risultati dimostrano come il principio del modello interno sia molto adatto per questo tipo di applicazioni.	
 	
 	

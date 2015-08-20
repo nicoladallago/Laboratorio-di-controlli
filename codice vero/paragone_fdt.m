@@ -1,7 +1,7 @@
 clc;
 %% NOTA : dato che ci sono delle variabili con nome comune usare il programma solo meta' alla volta, 
-%% far partire il file .m relativo al modello interno o al modello integrale e poi lanciare 
-%% questo programma con solo la meta' corrispondente non commentata
+%  far partire il file .m relativo al modello interno o al modello integrale e poi lanciare 
+%  questo programma con solo la meta' corrispondente non commentata
 
 s = tf([1 0], 1);
 
