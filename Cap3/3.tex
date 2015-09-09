@@ -352,9 +352,9 @@
 	\noindent dove $x(t)$ è lo stato, $u(t)$ l'ingresso e $y(t)$ l'uscita. Si dimostra che il processo in funzione di trasferimento può essere scritto come $P(s)=C(sI-A)^{-1}B+D$, ma quello che tipicamente si fa, è di ricavare direttamente le il modello dalle equazioni fisiche. Si procederà anche qui in questo modo. Le equazioni fisiche del motore, ricavate nella sessione \ref{sec:Modelizzazione}, sono divise in quattro parti:
 		
 	\begin{itemize}
-		\item elettrica: $V_m(t)=Ri(t)+k_{\phi}^{eq}\dot{\Theta}_l$
+		\item elettrica: $V_m(t)=Ri(t)+k_{\phi}^{eq}\dot{\Theta}_l$, con $k_{\phi}^{eq}=Nk_{\phi}$
 		\item elettromeccanica: $\tau_l(t)=k_{\phi}^{eq}i(t)$
-		\item meccanica: $J_{eq}\ddot{\Theta}_l=-b_{eq}\dot{\Theta}_l+\tau_l(t)$
+		\item meccanica: $J_{eq}\ddot{\Theta}_l=-b_{eq}\dot{\Theta}_l+\tau_l(t)$, con $J_{eq}=J_mN^2+J_l$ e $b_{eq}=b_mN^2+b_l$
 		\item sensore: $V_{out}(t)=K_T\Theta_l$
 	\end{itemize}  
 		
@@ -415,7 +415,7 @@
 		\end{cases}
 	\end{empheq}
 		
-	\noindent Essendo questo un sistema \textit{SISO}, la matrice di raggiungibilità ha rango pieno se e solo se il suo determinante è pari a zero. In questo caso
+	\noindent In questo caso la matrice di raggiungibilità $\mathcal{R}$  
 		
 	\begin{equation}
 		\mathcal{R}=[A|AB]=
@@ -425,7 +425,7 @@
 		\end{bmatrix}
 	\end{equation}
 		
-	\noindent ha rango 2, il che implica che il sistema considerato è raggiungibile. Lo stesso valo per la matrice di osservabilità
+	\noindent ha rango 2, il che implica che il sistema considerato è raggiungibile. Lo stesso vale per la matrice di osservabilità
 		
 	\begin{equation}
 		\mathcal{O}=
@@ -442,4 +442,6 @@
 		\end{bmatrix}
 	\end{equation} 
 		
-	\noindent che ha rango pieno, il  che implica un sistema osservabile. La raggiungibilità ci garantisce che per ogni condizione iniziale, posso portare il sistema in qualunque stato. Mentre l'osservabilità ci permette di ricavare lo stato conoscendo gli ingressi e le uscite.
+	\noindent che ha rango pieno, il  che implica un sistema osservabile. La raggiungibilità ci garantisce che per ogni condizione iniziale, posso portare il sistema in qualunque stato. Mentre l'osservabilità ci permette di ricavare lo stato conoscendo gli ingressi e le uscite. Questi sono due aspetti molto importanti che permettono di costruire un sistema di controllo in grado di controllare completamente il modello.
+	
+	

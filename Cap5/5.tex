@@ -258,3 +258,42 @@
 	
 		\noindent Si fa notare che il termine $-K_Ix_I$ può essere scritto come $-K_Ix_I(t)=-K_I\int y(t)-r(t)dt=K_I\int r(t)-y(t)dt$ e rappresentato graficamente in figura \ref{fig:integrale}. 
 		\newline  Questo modello risulta più lento rispetto al feed-forward perché l'errore integrale richiede un certo tempo prima che l'effeto sul controllo sia evidente.  
+		
+		
+
+
+
+	\subsection{Piazzamento dei poli in catena chiusa}
+	\label{subsec:PoliCatenaChiusa}
+	
+		Il problema principale di un controllo in spazio di stato, rimane quello di scegliere la posizione dei poli in catena chiusa. Non esistono delle regole matematiche ben precise, ma vi sono degli aspetti da tenere bene in mente quando si usa questo tipo di controllo. Come già accennato, i poli si trovano facilmente come $\det[sI-(A-BK)]$   
+		
+		\begin{wrapfloat}{figure}{L}{0pt}
+			\centering
+			\begin{tikzpicture}[scale=1]
+				%\draw[help lines,step=1] (0,0) grid (4,4);
+				\draw [-latex] (0,2) -- (4,2);
+				\draw [-latex] (3,0) -- (3,4);
+				\draw [dashed] (0.5,0) -- (2,1);
+				\draw [dashed] (0.5,4) -- (2,3);
+				\draw [dashed] (2,1) -- (2,3);
+				\fill [fill opacity=0.2] (0,0) -- (0.5,0) -- (2,1) -- (2,3) -- (0.5,4) -- (0,4);			
+				
+				\node [align=center] at (3.9, 2.2) {$\Re$};
+				\node [align=center] at (3.2, 3.9) {$\Im$};	
+			\end{tikzpicture}	
+			\caption{Regione delle specifiche per sistema del secondo ordine.}
+			\label{fig:regioneSpecifiche}			
+		\end{wrapfloat}
+		
+		\noindent e se la coppia $(A,B)$ è raggiungibile esiste sicuramente una matrice $K$ che può posizionare gli autovalori $(A-BK)$ nella posizione desiderata. Utilizzando una approssimazione di un sistema del secondo ordine \footnote{Consultare le note delle lezioni di \textit{Laboratorio di controlli} per una spiegazione accurata \url{http://www.dei.unipd.it/~schenato/didattica/LabControlli1/LC1_Lezione10.pdf}} si ottiene una regione nel piano complesso dove è possibile piazzare i poli come in figura \ref{fig:regioneSpecifiche}. Detto questo, per garantire delle buone prestazioni bisogna solitamente seguire almeno queste tre regole:
+		
+		\begin{itemize}
+			\item Spostare i poli in catena chiusa non troppo negativi, cioè cercare di piazzarli appena dentro la regione che soddisfa le specifiche; questo perché per piazzarli molto negativi, bisogna far crescere il valore della matrice $K$, ciò porta a una amplificazione degli errori di misura.
+			
+			\item Spostare di poco i poli che sono vicini agli zeri; questo perché se si pensa al \textit{luogo delle radici}, un polo vicino a uno zero avranno un ramo molto piccolo e quindi resterà in un intorno del polo.
+			
+			\item  Non spostare poli già molto negativi; semplicemente perché non si avrebbe alcun miglioramento pratico e anzi, si andrebbe ad aumentare ancora la matrice $K$.
+
+		\end{itemize}
+		
