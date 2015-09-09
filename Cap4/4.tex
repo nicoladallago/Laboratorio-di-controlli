@@ -140,7 +140,7 @@
 	   		\noindent In questo caso il modulo è una retta sempre con intercetta $20\log_{10}K_D$ ma con pendenza $20$ dB/decade, mentre la fase è una retta di altezza $90°$. La fase tende a far migliorare la stabilità, però la derivata del segnale amplifica il rumore in ingresso. E' necessario inoltre dire che un controllore così costruito risulta impossibile da progettare in pratica, perché avrebbe il modulo che cresce all'infinito. Quello che si fa è di aggiungere un polo in alta frequenza, facendo diventare il controllore
 	   		
 	   		\begin{equation*}
-	   			D_D(s)=\frac{K_Ds}{1+\tau_Ls}
+	   			C_D(s)=\frac{K_Ds}{1+\tau_Ls}
 	   		\end{equation*} 	 
 	
 		\noindent I pregi e difetti delle tre azioni sono schematizzati nella tabella che segue.	
@@ -263,11 +263,12 @@
 			\label{eq:asen}
 		\end{align}
 	
-		\noindent L'equazione \ref{eq:asen} mi fornisce un grado di libertà nella scelta dei parametri $K_P$ e $K_D$, tenendo però conto di soddisfare $\tau_I>>\tau_D$. Solitamente si sceglie 
+		\noindent L'equazione \ref{eq:asen} fornisce un grado di libertà nella scelta dei parametri $K_P$ e $K_D$, tenendo però conto di soddisfare $\tau_I>>\tau_D$. Solitamente si sceglie 
 		
-		\begin{equation}
+		\begin{empheq}[box=%
+		\fbox]{equation}
 			\tau_I=b\tau_D \singleSpacing, \trippleSpacing b\ge4
-		\end{equation}
+		\end{empheq}
 	
 		\noindent stando attenti a non scegliere $b$ troppo grande, altrimenti avrei tempi di reiezione del disturbo troppo lunghi. Rimane solo da ricavare $K_I$, per fare ciò basta risolvere l'equazione
 		
@@ -302,7 +303,7 @@
 			\omega_a^{min}= \frac{3}{\xi t_{s,max}}
 		\end{equation}
 		
-		\noindent dove $\xi$ rappresenta il coefficiente di smorzamento. Il vincolo sul massima sovraelongazione invece può essere convertito in una richiesta sul minimo margine di fase $m_{\phi}$ ammissibile. Per la conversione si possono allora utilizzare i due grafici riportati in figura \ref{fig:mSxiS}. Per una spiegazione dettagliata su come si possono ricavare i due grafici è possibile consultare l'appendice \ref{app:sistemaSecondoordine}.
+		\noindent dove $\xi$ rappresenta il coefficiente di smorzamento. Il vincolo sulla massima sovraelongazione invece può essere convertito in una richiesta sul minimo margine di fase $m_{\phi}$ ammissibile. Per la conversione si possono allora utilizzare i due grafici riportati in figura \ref{fig:mSxiS}. Per una spiegazione dettagliata su come si possono ricavare i due grafici è possibile consultare l'appendice \ref{app:sistemaSecondoordine}.
 		
 		\begin{figure}[H]
 			\centering
@@ -392,7 +393,7 @@
 			\label{fig:PIDdesaturatore}
 		\end{figure}
 	
-		\noindent Il motore utilizzato in laboratorio è comandato con un segnale di tensione, tale segnale deve essere compreso tra un intervallo di valori pari a $[-5,5]$ Volt. Ciò significa che è necessario saturare il segnale di controllo con un dispositivo denominato saturatore. Saturando l'ingresso al motore, l'errore $e(t)$ che comanda il controllore tende a diminuire più lentamente e il suo integrale sarà allora maggiore. Questo vuol dire che amplifica l'azione integrale durante la saturazione, rendendo il sistema più instabile. Per ovviare a questo introduco un secondo controllo in retroazione che interviene solo in caso di saturazione, lo schema di tale controllo è presente in Figura \ref{fig:PIDdesaturatore}. Questa retroazione diminuisce il termine integrale per un fattore proporzionale alla differenza tra l'uscita del controllore e la vera uscita che riceve il motore. Rimane quindi da scegliere la variabile $K_a$. Con qualche passaggio algebrico è possibile scrivere la funzione di trasferimento tra l'uscita del controllore $U_{PID}(s)$ e l'errore $E(s)$ in presenza di saturazione come   
+		\noindent Il motore utilizzato in laboratorio è comandato con un segnale di tensione, tale segnale deve essere compreso tra un intervallo di valori pari a $[-5,5]$ Volt. Ciò significa che è necessario saturare il segnale di controllo con un dispositivo denominato saturatore. Saturando l'ingresso al motore, l'errore $e(t)$ che comanda il controllore tende a diminuire più lentamente e il suo integrale sarà allora maggiore. Questo vuol dire che amplifica l'azione integrale durante la saturazione, rendendo il sistema più instabile. Per ovviare a questo si introduce un secondo controllo in retroazione che interviene solo in caso di saturazione, lo schema di tale controllo è presente in figura \ref{fig:PIDdesaturatore}. Questa retroazione diminuisce il termine integrale per un fattore proporzionale alla differenza tra l'uscita del controllore e la vera uscita che riceve il motore. Rimane quindi da scegliere la variabile $K_a$. Con qualche passaggio algebrico è possibile scrivere la funzione di trasferimento tra l'uscita del controllore $U_{PID}(s)$ e l'errore $E(s)$ in presenza di saturazione come   
 	
 		\begin{equation}
 			U_{PID}(s)=\frac{K_P+K_Ds+\frac{K_I}{s}}{1+\frac{K_aK_I}{s}}E(s)
@@ -403,5 +404,5 @@
 		
 		\begin{empheq}[box=%
 		\fbox]{equation}
-			\tau_a \approx \frac{1}{3}t_s \trippleSpacing \Rightarrow \trippleSpacing K_a \approx \frac{1}{3t_sK_I}
+			\tau_a \approx \frac{3}{t_s} \trippleSpacing \Rightarrow \trippleSpacing K_a \approx \frac{3}{t_sK_I}
 		\end{empheq}

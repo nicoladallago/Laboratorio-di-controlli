@@ -146,7 +146,7 @@
 		\begin{equation}
 			\begin{cases}
 				\dot{z}=A_zz+B_zu_z \\
-				y=C_zz
+				y_z=C_zz
 			\end{cases}
 			\label{eq:sistemaIntegrale}
 		\end{equation}
@@ -157,7 +157,7 @@
 			\begin{cases}
 				\begin{bmatrix}
 					\dot{x}_I \\
-					x
+					\dot{x}
 				\end{bmatrix}
 				=
 				\underbrace{
@@ -286,7 +286,7 @@
 			\label{fig:regioneSpecifiche}			
 		\end{wrapfloat}
 		
-		\noindent e se la coppia $(A,B)$ è raggiungibile esiste sicuramente una matrice $K$ che può posizionare gli autovalori $(A-BK)$ nella posizione desiderata. Utilizzando una approssimazione di un sistema del secondo ordine \footnote{Consultare le note delle lezioni di \textit{Laboratorio di controlli} per una spiegazione accurata \url{http://www.dei.unipd.it/~schenato/didattica/LabControlli1/LC1_Lezione10.pdf}} si ottiene una regione nel piano complesso dove è possibile piazzare i poli come in figura \ref{fig:regioneSpecifiche}. Detto questo, per garantire delle buone prestazioni bisogna solitamente seguire almeno queste tre regole:
+		\noindent e se la coppia $(A,B)$ è raggiungibile esiste sicuramente una matrice $K$ che può posizionare gli autovalori $(A-BK)$ nella posizione desiderata. Utilizzando una approssimazione di un sistema del secondo ordine\footnote{Consultare le note delle lezioni di \textit{Laboratorio di controlli} per una spiegazione accurata \url{http://www.dei.unipd.it/~schenato/didattica/LabControlli1/LC1_Lezione10.pdf}} si ottiene una regione nel piano complesso dove è possibile piazzare i poli come in figura \ref{fig:regioneSpecifiche}. Detto questo, per garantire delle buone prestazioni bisogna solitamente seguire almeno queste tre regole:
 		
 		\begin{itemize}
 			\item Spostare i poli in catena chiusa non troppo negativi, cioè cercare di piazzarli appena dentro la regione che soddisfa le specifiche; questo perché per piazzarli molto negativi, bisogna far crescere il valore della matrice $K$, ciò porta a una amplificazione degli errori di misura.
