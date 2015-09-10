@@ -6,7 +6,7 @@ step_time_input = 1;      % step time dell'ingresso a gradino
 ts = 0.15;                % ts < 0.15
 S = 10 / 100;             % S < 10%
 r = 50;                   % [gradi] - ampiezza gradino
-d = 0;                  % [Volt] - disturbo additivo  
+d = 0;                    % [Volt] - disturbo additivo  
 
 %% parametri motore (presi dalla tabella)
 % L = 0 per ipotesi
@@ -30,11 +30,11 @@ Jeq = (Jm * N^2) + Jl;
 a = -(bEq*R + KphiEq^2) / (Jeq*R);
 b = KphiEq / (Jeq*R);
 c = Kr2v;
-A = [ 0 ,1 ;
-      0 ,a];
-B = [0 ;  
+A = [0, 1 ;
+     0, a];
+B = [0;  
      b];
-C = [ c , 0];
+C = [c, 0];
 
 sigma = 3 / ts;
 xi = 0.6;                % dalla tabella
@@ -42,8 +42,8 @@ wn = sigma / xi;
 theta = acos(0.6);       % poiche' xi=cos(theta)
 h = wn * sin(theta);     % parte immaginaria del polo
 
-w1 = - sigma + i * h;    % polo desiderato 1
-w2 = - sigma - i * h;    % polo desiderato 2
+w1 = - sigma + 1i * h;   % polo desiderato 1
+w2 = - sigma - 1i * h;   % polo desiderato 2
 W = [w1 , w2];           % poli desiderati 
 K = place ( A , B , W ); % matrice di retroazione
 
